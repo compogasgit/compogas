@@ -1,0 +1,262 @@
+{{ header }}
+<div class="container">
+	<ul class="breadcrumb">
+		{% set array = breadcrumbs %}
+		{% set breadcrumbs = array|slice(0,-1) %}
+		{% set current = array|last %}
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+			<li>{{ current.text }}</li>
+	</ul>
+  	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+		{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-sm-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+
+		<div id="content" class="{{ class }}">{{ content_top }}
+		<h1>{{ heading_title }}</h1>
+
+		{% set content = description|striptags %}
+		{% if content %}
+
+		<div class="articles-info">
+
+		{% if image_popup %}
+    			<div class="article-image{{ float ? ' acfloat' }}"><a class="image_popup" href="{{ image_popup }}"><img src="{{ image }}" alt="{{ heading_title }}" /></a></div>
+		{% else %}
+			{% if image %}
+		    		<div class="article-image"><img src="{{ image }}" alt="{{ heading_title }}" /></div>
+			{% endif %}
+    		{% endif %}
+
+    		<div{{ not articles ? ' class="article-content"' }}>{{ description }}</div>
+
+		{% if not articles %}
+			<div class="article-add-info">
+				<div>
+					{% if show_date %}
+						<span class="article-date"><i class="fa fa-calendar"></i> {{ date }}</span>
+					{% endif %}
+					{% if show_views %}
+						<span class="article-viewed"><i class="fa fa-eye"></i> {{ viewed }}</span>
+					{% endif %}
+				</div>
+					{% if social %}
+						<div class="article-share">{{ social }}</div>
+					{% endif %}
+					{% if continue %}
+						<div><a href="{{ continue }}" class="btn-continue"><i class="fa fa-share-square-o"></i> {{ button_continue }}</a></div>
+					{% endif %}
+			</div>
+		{% endif %}
+
+		{% if products %}
+		<!-- products start -->
+		      <div class="related-art-product">
+		      <h3>{{ text_related }}</h3>
+		      <div class="row">
+			{% set i = 0 %}
+			{% for product in products %}
+				{% if column_left and column_right %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-6' %}
+				{% elseif column_left or column_right %}
+				{% set class = 'col-lg-4 col-md-4 col-sm-6 col-xs-6' %}
+				{% else %}
+				{% set class = 'col-lg-3 col-md-4 col-sm-6 col-xs-6' %}
+				{% endif %}
+		
+		        <div class="{{ class }}">
+		          <div class="related-product-block">
+		            <div class="image"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a></div>
+		            <div class="caption">
+		              <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+		              <p>{{ product.description }}</p>
+		
+				{% if product.rating %}
+			              <div class="rating">
+			                {% for i in 1..5 %}
+			                {% if product.rating < i %}
+			                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>
+			                {% else %}
+			                <span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>
+			                {% endif %}
+			                {% endfor %}
+			              </div>
+		              {% endif %}
+		
+				{% if product.price %}
+			              <p class="price">
+			                {% if not product.special %}
+			                {{ product.price }}
+			                {% else %}
+			                	<span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+			                {% endif %}
+			                {% if product.tax %}
+			                	<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+			                {% endif %}
+			              </p>
+		              {% endif %}
+		            </div>
+		            <div class="button-group">
+		              <button type="button" class="buttons-related" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');"><span><i class="fa fa-shopping-cart"></i> {{ button_cart }}</span></button>
+		              <button type="button" class="buttons-related" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart"></i></button>
+		              <button type="button" class="buttons-related" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="fa fa-exchange"></i></button>
+		            </div>
+		          </div>
+		        </div>
+		       {% endfor %}
+		      </div>
+		     </div>
+		<!-- products end -->
+		{% endif %}
+
+		{% if similar_articles %}
+		<!-- similar start -->
+		      <div class="similar-articles">
+		      <h3>{{ text_similar_articles }}</h3>
+		      <div class="row ac-line">
+			{% set i = 0 %}
+			{% for similar_article in similar_articles %}
+				{% if column_left and column_right %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+				{% elseif column_left or column_right %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-6 col-xs-12' %}
+				{% else %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-6 col-xs-12' %}
+				{% endif %}
+		
+		        <div class="{{ class }}">
+		          <div class="similar-article-block">
+		            <div class="image"><a href="{{ similar_article.href }}"><img src="{{ similar_article.thumb }}" alt="{{ similar_article.name }}" title="{{ similar_article.name }}" class="img-responsive" /></a></div>
+		            <div class="caption">
+		              <h4><a href="{{ similar_article.href }}">{{ similar_article.name }}</a></h4>
+		              <p>{{ similar_article.description }}</p>
+		            </div>
+		          </div>
+		        </div>
+		        {% endfor %}
+		      </div>
+		     </div>
+		<!-- similar end -->
+		{% endif %}
+	  
+		{% if not articles and vk_comments_api %}
+			<div id="vk_comments"></div>
+			<script>
+			window.onload = function () {
+			 VK.init({apiId: {{ vk_comments_api }}, onlyWidgets: true});
+			 VK.Widgets.Comments('vk_comments');
+			}
+			</script>
+		{% endif %}
+	  
+ 		</div>
+    	{% endif %}
+
+	{% if articles %}
+		{% if column_left and column_right %}
+		{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-lg-4 col-md-4 col-sm-6 col-xs-12' %}
+		{% else %}
+		{% set class = 'col-lg-3 col-md-4 col-sm-6 col-xs-12' %}
+		{% endif %}
+
+		<div class="ac-line">  
+			{% for article in articles %}
+			{% if article.children %}
+				<div class="art_category {{ class }}">
+				<div class="product-thumb transition">
+				<a href="{{ article.href }}">
+					{% if article.thumb_category %}
+				      <div class="article-image"><img src="{{ article.thumb_category }}" alt="{{ article.name }}" /></div>
+				      {% endif %}
+					<div class="name"><h3><i class="fa fa-bars"></i> {{ article.name }}</h3></div>
+				</a>
+				</div>
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+
+		{% if list_type == 2 %}
+			<div class="ac-line">
+		{% endif %}
+
+		{% for article in articles_list %}
+			<div class="{{ list_type == 2 ? 'articles-grid ' ~ class : 'articles-list' }}">
+				<div>
+					{% if article.thumb %}
+				      <div class="article-image"><a {{ article.external ? 'class="external" id="img_' ~ article.article_id ~ '"' }} href="{{ article.href }}"><img src="{{ article.thumb }}" title="{{ article.name }}" alt="{{ article.name }}" /></a></div>
+				      {% endif %}
+		
+				<div class="description">
+				      <div class="name"><a {{ article.external ? 'class="external" id="link_' ~ article.article_id ~ '"' }} href="{{ article.href }}">{{ article.name }}</a></div>
+				
+					{% if article.description %}
+						<div class="ac-snippet">{{ article.description }}</div>
+			      		{% endif %}
+		
+					{% if show_date or show_views or show_readmore %}
+					<div class="add-info">
+					{% if show_date %}
+					<span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+					{% endif %}
+					{% if show_views %}
+					<span class="article-viewed"><i class="fa fa-eye"></i> {{ article.viewed }}</span>
+					{% endif %}
+					{% if article.description and show_readmore %}
+					<a {{ article.external ? 'class="art-readmore external" id="more_' ~ article.article_id : 'class="art-readmore"' }} href="{{ article.href }}"><i class="fa fa-share-square-o"></i> {{ text_readmore }}</a>
+					{% endif %}
+					</div>
+					{% endif %}
+				</div>
+				
+				</div>
+			</div>
+		{% endfor %}
+		
+		{% if list_type == 2 %}
+			</div>
+		{% endif %}
+		
+		<br />
+		      <div class="row">
+		        <div class="col-sm-6 text-left">{{ pagination }}</div>
+		        <div class="col-sm-6 text-right">{{ results }}</div>
+		      </div>
+		
+				{% if additional_description %}
+					<div class="art_category_additional">
+					    {{ additional_description }}
+					</div>
+			    	{% endif %}
+		
+		  {% endif %}
+		
+		{{ content_bottom }}</div>
+		    {{ column_right }}</div>
+		</div>
+		
+		<script><!--
+		$('.image_popup').magnificPopup({
+			type: 'image'
+		});
+		//--></script>
+		<script><!--
+			$('.external').click(function(){
+				var id = this.id.replace(/[^0-9]/g, '');
+				$.ajax({
+					url: 'index.php?route=information/article/updateViewed',
+					type: 'post',
+					data: 'article_id=' + id,
+					dataType: 'html'	
+				});
+			});
+		//--></script>
+{{ footer }}

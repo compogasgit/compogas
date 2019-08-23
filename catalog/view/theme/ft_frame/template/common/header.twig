@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="yandex-verification" content="2eaaa3193abb5920" />
+<meta name="google-site-verification" content="cXGJDIvUe6EuRGAXXOkhZ9K8gPclmLiGFzQmgsSHIjs" />
+
+{% if meta_theme_color %}
+<meta name="theme-color" content="{{ meta_theme_color }}">
+{% endif %}
+<title>{{ title }}</title>
+<base href="{{ base }}">
+{% if description %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}">
+{% endif %}
+{% if not minify %}
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.css" rel="preload" as="style">
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/ft_base.css?v={{ theme_version }}" rel="preload" as="style">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/ft_base.css?v={{ theme_version }}" rel="stylesheet">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css?v={{ theme_version }}" rel="preload" as="style">
+<link href="catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css?v={{ theme_version }}" rel="stylesheet">
+{% if fontawesome %}
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="preload" as="style">
+<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+{% endif %}
+{% for style in styles %}
+<link href="{{ style.href }}" rel="preload" as="style">
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}">
+{% endfor %}
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.3.1.min.js" rel="preload" as="script">
+<script src="catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.3.1.min.js"></script>
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/popper.min.js" rel="preload" as="script">
+<script src="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/popper.min.js"></script>
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.js" rel="preload" as="script">
+<script src="catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.js"></script>
+{% for script in scripts %}
+<link href="{{ script }}" rel="preload" as="script">
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<link href="catalog/view/theme/{{ theme_dir }}/javascript/ft_common.js?v={{ theme_version }}" rel="preload" as="script">
+<script src="catalog/view/theme/{{ theme_dir }}/javascript/ft_common.js?v={{ theme_version }}"></script>
+{% else %}
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.css,catalog/view/theme/{{ theme_dir }}/stylesheet/ft_base.css,catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{% if fontawesome %},catalog/view/javascript/font-awesome/css/font-awesome.min.css{% endif %}{% for style in styles %},{{ style.href }}{% endfor %}" rel="preload" as="style">
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.css,catalog/view/theme/{{ theme_dir }}/stylesheet/ft_base.css,catalog/view/theme/{{ theme_dir }}/stylesheet/stylesheet.css{% if fontawesome %},catalog/view/javascript/font-awesome/css/font-awesome.min.css{% endif %}{% for style in styles %},{{ style.href }}{% endfor %}" rel="stylesheet">
+<link href="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.3.1.min.js,catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/popper.min.js,catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.js{% for script in scripts %},{{ script }}{% endfor %},catalog/view/theme/{{ theme_dir }}/javascript/ft_common.js" rel="preload" as="script">
+<script src="min/?{% if site_dir %}b={{ site_dir }}&{% endif %}f=catalog/view/theme/{{ theme_dir }}/javascript/jquery-3.3.1.min.js,catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/popper.min.js,catalog/view/theme/{{ theme_dir }}/javascript/bootstrap/bootstrap.min.js{% for script in scripts %},{{ script }}{% endfor %},catalog/view/theme/{{ theme_dir }}/javascript/ft_common.js"></script>
+{% endif %}
+{% if webfont and webfont_link %}
+{{ webfont_link }}
+{% endif %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}">
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+{{ cust_code }}
+{% if stikers %}
+<style>
+{% if webfont and webfont_style %}html,body{ {{ webfont_style }}}{% endif %}
+{{ cust_css }}
+.stiker-special{background-color:{{ stikers['special']['bg_color'] }};color:{{ stikers['special']['txt_color'] }}}
+.stiker-isbn{background-color:{{ stikers['isbn']['bg_color'] }};color:{{ stikers['isbn']['txt_color'] }}}
+.stiker-upc{background-color:{{ stikers['upc']['bg_color'] }};color:{{ stikers['upc']['txt_color'] }}}
+.stiker-ean{background-color:{{ stikers['ean']['bg_color'] }};color:{{ stikers['ean']['txt_color'] }}}
+.stiker-jan{background-color:{{ stikers['jan']['bg_color'] }};color:{{ stikers['jan']['txt_color'] }}}
+.stiker-mpn{background-color:{{ stikers['mpn']['bg_color'] }};color:{{ stikers['mpn']['txt_color'] }}}
+{% if preloader_status %}
+.preloader_on{height:100%;margin:0;overflow:hidden}
+.desktop .preloader_on{padding-right:17px}
+.preloader-wrapper{position:fixed;top:0;left:0;bottom:0;right:0;z-index:9999;background-color:{{ preloader_bg }}}
+.preloader-wrapper>div{display:table;height:100%;width:100%}
+.preloader-wrapper>div>div{display:table-cell;height:100%;width:100%;vertical-align:middle}
+{% if preloader_type == 0 %}
+.preloader{background-color:{{ preloader_color }};width:40px;height:40px;margin:100px auto;-webkit-animation:sk-rotateplane 1.2s infinite ease-in-out;animation:sk-rotateplane 1.2s infinite ease-in-out}@-webkit-keyframes sk-rotateplane{0%{-webkit-transform:perspective(120px)}50%{-webkit-transform:perspective(120px) rotateY(180deg)}100%{-webkit-transform:perspective(120px) rotateY(180deg) rotateX(180deg)}}@keyframes sk-rotateplane{0%{transform:perspective(120px) rotateX(0) rotateY(0);-webkit-transform:perspective(120px) rotateX(0) rotateY(0)}50%{transform:perspective(120px) rotateX(-180.1deg) rotateY(0);-webkit-transform:perspective(120px) rotateX(-180.1deg) rotateY(0)}100%{transform:perspective(120px) rotateX(-180deg) rotateY(-179.9deg);-webkit-transform:perspective(120px) rotateX(-180deg) rotateY(-179.9deg)}}
+{% elseif preloader_type == 1 %}
+.preloader{width:40px;height:40px;position:relative;margin:100px auto}.double-bounce1,.double-bounce2{width:100%;height:100%;border-radius:50%;background-color:{{ preloader_color }};opacity:.6;position:absolute;top:0;left:0;-webkit-animation:sk-bounce 2s infinite ease-in-out;animation:sk-bounce 2s infinite ease-in-out}.double-bounce2{-webkit-animation-delay:-1s;animation-delay:-1s}@-webkit-keyframes sk-bounce{0%,100%{-webkit-transform:scale(0)}50%{-webkit-transform:scale(1)}}@keyframes sk-bounce{0%,100%{transform:scale(0);-webkit-transform:scale(0)}50%{transform:scale(1);-webkit-transform:scale(1)}}
+{% elseif preloader_type == 2 %}
+.preloader{margin:100px auto;width:50px;height:40px;text-align:center;font-size:10px}.preloader>div{background-color:{{ preloader_color }};height:100%;width:6px;display:inline-block;-webkit-animation:sk-stretchdelay 1.2s infinite ease-in-out;animation:sk-stretchdelay 1.2s infinite ease-in-out}.preloader .rect2{-webkit-animation-delay:-1.1s;animation-delay:-1.1s}.preloader .rect3{-webkit-animation-delay:-1s;animation-delay:-1s}.preloader .rect4{-webkit-animation-delay:-.9s;animation-delay:-.9s}.preloader .rect5{-webkit-animation-delay:-.8s;animation-delay:-.8s}@-webkit-keyframes sk-stretchdelay{0%,100%,40%{-webkit-transform:scaleY(.4)}20%{-webkit-transform:scaleY(1)}}@keyframes sk-stretchdelay{0%,100%,40%{transform:scaleY(.4);-webkit-transform:scaleY(.4)}20%{transform:scaleY(1);-webkit-transform:scaleY(1)}}
+{% elseif preloader_type == 3 %}
+.preloader{width:40px;height:40px;margin:100px auto;background-color:{{ preloader_color }};border-radius:100%;-webkit-animation:sk-scaleout 1s infinite ease-in-out;animation:sk-scaleout 1s infinite ease-in-out}@-webkit-keyframes sk-scaleout{0%{-webkit-transform:scale(0)}100%{-webkit-transform:scale(1);opacity:0}}@keyframes sk-scaleout{0%{-webkit-transform:scale(0);transform:scale(0)}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}
+{% elseif preloader_type == 4 %}
+.sk-fading-circle{margin:100px auto;width:40px;height:40px;position:relative}.sk-fading-circle .sk-circle{width:100%;height:100%;position:absolute;left:0;top:0}.sk-fading-circle .sk-circle:before{content:'';display:block;margin:0 auto;width:15%;height:15%;background-color:{{ preloader_color }};border-radius:100%;-webkit-animation:sk-circleFadeDelay 1.2s infinite ease-in-out both;animation:sk-circleFadeDelay 1.2s infinite ease-in-out both}.sk-fading-circle .sk-circle2{-webkit-transform:rotate(30deg);-ms-transform:rotate(30deg);transform:rotate(30deg)}.sk-fading-circle .sk-circle3{-webkit-transform:rotate(60deg);-ms-transform:rotate(60deg);transform:rotate(60deg)}.sk-fading-circle .sk-circle4{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.sk-fading-circle .sk-circle5{-webkit-transform:rotate(120deg);-ms-transform:rotate(120deg);transform:rotate(120deg)}.sk-fading-circle .sk-circle6{-webkit-transform:rotate(150deg);-ms-transform:rotate(150deg);transform:rotate(150deg)}.sk-fading-circle .sk-circle7{-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}.sk-fading-circle .sk-circle8{-webkit-transform:rotate(210deg);-ms-transform:rotate(210deg);transform:rotate(210deg)}.sk-fading-circle .sk-circle9{-webkit-transform:rotate(240deg);-ms-transform:rotate(240deg);transform:rotate(240deg)}.sk-fading-circle .sk-circle10{-webkit-transform:rotate(270deg);-ms-transform:rotate(270deg);transform:rotate(270deg)}.sk-fading-circle .sk-circle11{-webkit-transform:rotate(300deg);-ms-transform:rotate(300deg);transform:rotate(300deg)}.sk-fading-circle .sk-circle12{-webkit-transform:rotate(330deg);-ms-transform:rotate(330deg);transform:rotate(330deg)}.sk-fading-circle .sk-circle2:before{-webkit-animation-delay:-1.1s;animation-delay:-1.1s}.sk-fading-circle .sk-circle3:before{-webkit-animation-delay:-1s;animation-delay:-1s}.sk-fading-circle .sk-circle4:before{-webkit-animation-delay:-.9s;animation-delay:-.9s}.sk-fading-circle .sk-circle5:before{-webkit-animation-delay:-.8s;animation-delay:-.8s}.sk-fading-circle .sk-circle6:before{-webkit-animation-delay:-.7s;animation-delay:-.7s}.sk-fading-circle .sk-circle7:before{-webkit-animation-delay:-.6s;animation-delay:-.6s}.sk-fading-circle .sk-circle8:before{-webkit-animation-delay:-.5s;animation-delay:-.5s}.sk-fading-circle .sk-circle9:before{-webkit-animation-delay:-.4s;animation-delay:-.4s}.sk-fading-circle .sk-circle10:before{-webkit-animation-delay:-.3s;animation-delay:-.3s}.sk-fading-circle .sk-circle11:before{-webkit-animation-delay:-.2s;animation-delay:-.2s}.sk-fading-circle .sk-circle12:before{-webkit-animation-delay:-.1s;animation-delay:-.1s}@-webkit-keyframes sk-circleFadeDelay{0%,100%,39%{opacity:0}40%{opacity:1}}@keyframes sk-circleFadeDelay{0%,100%,39%{opacity:0}40%{opacity:1}}
+{% elseif preloader_type == 5 %}
+.preloader{margin:100px auto;width:70px;text-align:center}.preloader>div{width:18px;height:18px;background-color:{{ preloader_color }};border-radius:100%;display:inline-block;-webkit-animation:sk-bouncedelay 1.4s infinite ease-in-out both;animation:sk-bouncedelay 1.4s infinite ease-in-out both}.preloader .bounce1{-webkit-animation-delay:-.32s;animation-delay:-.32s}.preloader .bounce2{-webkit-animation-delay:-.16s;animation-delay:-.16s}@-webkit-keyframes sk-bouncedelay{0%,100%,80%{-webkit-transform:scale(0)}40%{-webkit-transform:scale(1)}}@keyframes sk-bouncedelay{0%,100%,80%{-webkit-transform:scale(0);transform:scale(0)}40%{-webkit-transform:scale(1);transform:scale(1)}}
+{% endif %}
+{% endif %}
+</style>
+{% endif %}
+</head>
+<body class="{% if preloader_status %}preloader_on{% endif %}">
+{% if preloader_status %}
+<div class="preloader-wrapper">
+	<div class="d-table h-100 w-100">
+		<div class="d-table-cell h-100 w-100 align-middle">
+			{% if preloader_type == 0 %}
+			<div class="preloader"></div>
+			{% elseif preloader_type == 1 %}
+			<div class="preloader"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
+			{% elseif preloader_type == 2 %}
+			<div class="preloader"><div class="rect1"></div> <div class="rect2"></div> <div class="rect3"></div> <div class="rect4"></div> <div class="rect5"></div></div>
+			{% elseif preloader_type == 3 %}
+			<div class="preloader"></div>
+			{% elseif preloader_type == 4 %}
+			<div class="sk-fading-circle"><div class="sk-circle1 sk-circle"></div><div class="sk-circle2 sk-circle"></div><div class="sk-circle3 sk-circle"></div><div class="sk-circle4 sk-circle"></div><div class="sk-circle5 sk-circle"></div><div class="sk-circle6 sk-circle"></div><div class="sk-circle7 sk-circle"></div><div class="sk-circle8 sk-circle"></div><div class="sk-circle9 sk-circle"></div><div class="sk-circle10 sk-circle"></div><div class="sk-circle11 sk-circle"></div><div class="sk-circle12 sk-circle"></div></div>
+			{% elseif preloader_type == 5 %}
+			<div class="preloader"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
+			{% endif %}
+		</div>
+	</div>
+	<script>function remove_preloader(){$.when($(".preloader-wrapper").fadeOut(100)).then(function(e,r,o){$(".preloader-wrapper").remove(),$("body").removeClass("preloader_on")})}window.onload=remove_preloader,setTimeout(remove_preloader,{{ preloader_timeout }})</script>
+</div>
+{% endif %}
+<header>
+	<nav id="top" class="m-blured">
+		<div class="container">
+			<div class="row no-gutters">
+				<div class="col-auto">
+					<div class="btn-group">
+						{{ language }}
+						{{ currency }}
+					</div>
+				</div>
+				<div class="col text-center">
+					<div class="btn-group">
+						<a class="btn btn-sm-ft btn-light pl-1" href="{{ wishlist }}" aria-label="{{ text_wishlist }}">
+							<span class="si si-rem">
+								<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+									<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+								</svg>
+							</span>
+							<span class="d-none d-md-inline ml-1" id="wishlist-total">{{ text_wishlist }}</span>
+						</a>
+						<a class="btn btn-sm-ft btn-light pl-1" href="{{ link_compare }}" aria-label="{{ g_text_compare }}">
+							<span class="si si-rem">
+								<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+									<path d="M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v13l-5-6v9h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+								</svg>
+							</span>
+							<span class="d-none d-md-inline ml-1" id="compare-total">{{ g_text_compare }}</span>
+						</a>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="btn-group">
+						{{ ft_hlinks }}
+						<div class="btn-group">
+							<a class="btn btn-sm-ft btn-light dropdown-toggle" href="#" title="{{ text_account }}" data-toggle="dropdown">
+								<span class="si si-rem">
+									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+										<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+									</svg>
+								</span>
+								<span class="d-none d-lg-inline mx-1">{{ text_account }}</span>
+								<span class="si si-tin si-rem si-arrow">
+									<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+										<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+									</svg>
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								{% if logged %}
+								<a class="dropdown-item" href="{{ account }}">{{ text_account }}</a>
+								<a class="dropdown-item" href="{{ order }}">{{ text_order }}</a>
+								<a class="dropdown-item" href="{{ transaction }}">{{ text_transaction }}</a>
+								<a class="dropdown-item" href="{{ download }}">{{ text_download }}</a>
+								<a class="dropdown-item" href="{{ logout }}">{{ text_logout }}</a>
+								{% else %}
+								<a class="dropdown-item" href="{{ register }}">{{ text_register }}</a>
+								<a class="dropdown-item" href="{{ login }}">{{ text_login }}</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="container m-blured">
+		<div class="row mt-3 mb-3 mt-lg-4 mb-lg-4">
+			<div class="col-12 col-lg-3 col-xl-mw260">
+				<div id="logo" class="text-center text-lg-left">
+					<div class="d-table w-100 h-100">
+						<div class="d-table-cell w-100 h-100 align-middle">
+							{% if ft_logo %}{{ ft_logo }}{% elseif logo %}
+							<a href="{{ home }}" aria-label="Logo"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-fluid"></a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-lg d-lg-none"><hr></div>
+			<div class="col-12 col-lg-auto">{{ ft_contacts }}</div>
+			<div class="col-12 col-lg d-lg-none"><hr></div>
+			<div class="col-12 col-lg">{{ ft_links }}</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-12 col-lg order-lg-2 m-blured">{{ ft_search }}</div>
+			<div class="col-12 col-md-6 col-lg-auto order-md-3 order-lg-3 m-blured">{{ ft_cart }}</div>
+			<div class="col-12 col-md-6 col-lg-3 col-xl-mw260 order-md-2 order-lg-1">{{ ft_menu }}</div>
+		</div>
+	</div>
+</header>
+<div class="content-wrapper m-blured">

@@ -1,0 +1,152 @@
+{{ header }}
+<div id="account-account" class="container">
+  {% if success %}
+  <div class="alert alert-success alert-dismissible">
+		{{ success }}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+  {% endif %}
+	  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+			{{ column_right }}
+		</div>
+		{% endif %}
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			{{ content_top }}
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item">
+						<a href="{{ breadcrumb.href }}">
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+						</a>
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% else %}
+					<li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+      <h1 class="h2 mb-4">Моя информация</h1>
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<span class="si mr-3">
+									<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+									</svg>
+								</span>
+								{{ text_my_account }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ edit }}" class="list-group-item list-group-item-action py-2">{{ text_edit }}</a>
+							<a href="{{ password }}" class="list-group-item list-group-item-action py-2">{{ text_password }}</a>
+							<a href="{{ address }}" class="list-group-item list-group-item-action py-2">{{ text_address }}</a>
+							<a href="{{ wishlist }}" class="list-group-item list-group-item-action py-2">{{ text_wishlist }}</a>
+						</div >
+					</div>
+					{% if credit_cards %}
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<span class="si mr-3">
+									<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+									</svg>
+								</span>
+								{{ text_credit_card }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							{% for credit_card in credit_cards %}
+							<a href="{{ credit_card.href }}" class="list-group-item list-group-item-action py-2">{{ credit_card.name }}</a>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<span class="si mr-3">
+									<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+									</svg>
+								</span>
+								{{ text_my_affiliate }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							{% if not tracking %}
+							<a href="{{ affiliate }}" class="list-group-item list-group-item-action py-2">{{ text_affiliate_add }}</a>
+							{% else %}
+							<a href="{{ affiliate }}" class="list-group-item list-group-item-action py-2">{{ text_affiliate_edit }}</a>
+							<a href="{{ tracking }}" class="list-group-item list-group-item-action py-2">{{ text_tracking }}</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-md-6">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<span class="si mr-3">
+									<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M10 16v-1H3.01L3 19c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2v-4h-7v1h-4zm10-9h-4.01V5l-2-2h-4l-2 2v2H4c-1.1 0-2 .9-2 2v3c0 1.11.89 2 2 2h6v-2h4v2h6c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-6 0h-4V5h4v2z"/>
+									</svg>
+								</span>
+								{{ text_my_orders }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ order }}" class="list-group-item list-group-item-action py-2">{{ text_order }}</a>
+							<a href="{{ download }}" class="list-group-item list-group-item-action py-2">{{ text_download }}</a>
+							{% if reward %}
+							<a href="{{ reward }}" class="list-group-item list-group-item-action py-2">{{ text_reward }}</a>
+							{% endif %}
+							<a href="{{ return }}" class="list-group-item list-group-item-action py-2">{{ text_return }}</a>
+							<a href="{{ transaction }}" class="list-group-item list-group-item-action py-2">{{ text_transaction }}</a>
+							<a href="{{ recurring }}" class="list-group-item list-group-item-action py-2">{{ text_recurring }}</a>
+						</div >
+					</div>
+					<div class="card mb-3">
+						<div class="card-header">
+							<h5 class="mb-0">
+								<span class="si mr-3">
+									<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
+									</svg>
+								</span>
+								{{ text_my_newsletter }}
+							</h5>
+						</div>
+						<div  class="list-group list-group-flush">
+							<a href="{{ newsletter }}" class="list-group-item list-group-item-action py-2">{{ text_newsletter }}</a>
+						</div >
+					</div>
+				</div>
+			</div>
+    </div>
+  </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

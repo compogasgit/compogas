@@ -1,0 +1,56 @@
+<style>
+    .category-wall {
+        cursor: pointer;
+    }
+    .category-wall-child {
+        top: 0;
+    }
+    .category-wall-child .list-group-item {
+        background-color: rgba(255,255,255, .75);
+    }
+    .category-wall-child .list-group-item-action:focus,
+    .category-wall-child .list-group-item-action:hover {
+        color: #ffffff;
+        text-decoration: none;
+        background-color: rgba(220,53,69, .9);
+    }
+    .category-wall-caption {
+        min-height: 44px;
+    }
+    .category-wall-caption a {
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #333333;
+    }
+    .category-wall-caption a:focus,
+    .category-wall-caption a:hover {
+        color: #dc3545;
+        text-decoration: none;
+    }
+</style>
+<h3 class="category-wall" data-toggle="collapse" href="#collapseCategoryWall" role="button" aria-expanded="true" aria-controls="collapseCategoryWall">{{ heading_title }}</h3>
+<div class="row collapse show" id="collapseCategoryWall">
+    {% for category in categories %}
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="product-thumb transition text-center border rounded mb-4 shadow-sm">
+                <div class="image position-relative">
+                    {% if category.children %}
+                    <img src="{{ category.image }}" alt="{{ category.name }}" title="{{ category.name }}" class="img-responsive">
+                    <div class="category-wall-child position-absolute list-group list-group-flush w-100">
+                    {% for child in category.children %}
+                        <a href="{{ child.href }}" class="list-group-item list-group-item-action">{{ child.name }}</a>
+                    {% endfor %}
+                    </div>
+                    {% else %}
+                    <a href="{{ category.href }}">
+                        <img src="{{ category.image }}" alt="{{ category.name }}" title="{{ category.name }}" class="img-responsive">
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="category-wall-caption">
+                    <h5 class="mt-2"><a href="{{ category.href }}">{{ category.name }}</a></h5>
+                </div> 
+            </div>
+        </div>
+    {% endfor %}
+</div>

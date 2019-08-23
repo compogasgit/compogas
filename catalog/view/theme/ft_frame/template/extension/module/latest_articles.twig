@@ -1,0 +1,20 @@
+<div class="{{ custom_position }}">
+<h3>{{ heading_title }}</h3>
+<div class="row latest-articles{{ layout_position }}">
+	{% for article in articles %}
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="la-content transition">
+			{% if article.thumb %}
+				<div class="image"><a href="{{ article.href }}"><img src="{{ article.thumb }}" alt="{{ article.name }}" class="img-responsive" /></a></div>
+			{% endif %}
+			{% if show_date %}
+				<span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+			{% endif %}
+				<div class="name"><a href="{{ article.href }}">{{ article.name }}</a></div>
+				<div class="article-caption">{{ article.caption }}</div>
+			</div>
+		</div>
+      {% endfor %}
+</div>
+	<div class="all-articles"><a href="{{ parent_href }}"><i class="fa fa-bars"></i> {{ text_all_articles }}</a></div>
+</div>

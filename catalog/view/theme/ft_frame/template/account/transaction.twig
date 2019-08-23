@@ -1,0 +1,94 @@
+{{ header }}
+<div id="account-transaction" class="container">
+  <div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+    {% if column_left and column_right %}
+    {% set class = 'col-lg-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-lg-9' %}
+    {% else %}
+    {% set class = 'col-lg' %}
+    {% endif %}
+
+    <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+      {{ content_top }}
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item">
+						<a href="{{ breadcrumb.href }}">
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+						</a>
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% else %}
+					<li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+      <h1 class="h2 mb-4">Ваши транзакции</h1>
+			
+      <p>{{ text_total }} <b>{{ total }}</b>.</p>
+      <div class="table-responsive mb-3">
+        
+        {% if transactions %}
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <td class="text-left">{{ column_date_added }}</td>
+              <td class="text-left">{{ column_description }}</td>
+              <td class="text-right">{{ column_amount }}</td>
+            </tr>
+          </thead>
+          <tbody>
+          
+          
+          {% for transaction in transactions %}
+          <tr>
+            <td class="text-left">{{ transaction.date_added }}</td>
+            <td class="text-left">{{ transaction.description }}</td>
+            <td class="text-right">{{ transaction.amount }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        
+          {% else %}        
+            <p>Транзакции еще не осуществлены.</p>         
+          {% endif %}
+            
+          
+        
+      </div>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+      <div>
+        <a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+      </div>
+      </div>
+    </div>
+	{{ content_bottom }}
+</div>
+{{ footer }}

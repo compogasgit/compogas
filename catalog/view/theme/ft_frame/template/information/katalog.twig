@@ -1,0 +1,60 @@
+{{ header }}
+<div id="katalog" class="container">
+    <div class="row">
+        {% if column_left %}
+            <div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+                {{ column_left }}
+            </div>
+        {% endif %}
+        {% if column_right %}
+            <div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+                {{ column_right }}
+            </div>
+        {% endif %}
+        <div id="content" class="col-12 col-lg order-lg-2 mb-3">
+            {{ content_top }}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {% set i = 0 %}
+                    {% for breadcrumb in breadcrumbs %}
+                        {% set i = i + 1 %}
+                        {% if i == 1 %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ breadcrumb.href }}">
+                                    <span class="si si-18 d-inline-block">
+                                        <svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                                        </svg>
+                                    </span>
+                                </a>
+                            </li>
+                        {% elseif breadcrumbs|length != i %}
+                            <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                        {% else %}
+                            <li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </nav>
+            <h1 class="h2 mb-4">{{ heading_title }}</h1>
+            <div class="row" id="katalogProduct">
+                {% for category in categories %}
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+                        <div class="product-thumb transition text-center border rounded mb-4 shadow-sm flex-grow-1">
+                            <div class="image position-relative">
+                                <a href="{{ category.href }}">
+                                    <img src="{{ category.image }}" alt="{{ category.name }}" title="{{ category.name }}" class="img-fluid">
+                                </a>
+                            </div>
+                            <div class="category-caption">
+                                <a class="p-2 text-dark text-uppercase d-block h5" href="{{ category.href }}"><strong>{{ category.name }}</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {{ content_bottom }}
+</div>
+{{ footer }}

@@ -1,0 +1,76 @@
+{{ header }}
+<div id="common-home" class="container">
+	<div id="content">
+		<div class="row flex-nowrap">
+			{% if column_left or menu_open %}
+			<div class="d-none d-lg-block col-lg-3 col-xl-mw260 order-1">
+				{% if menu_open %}
+				<div class="menu-holder d-none d-lg-block mb-3"></div>
+				<script>function menu_open_holder(){$(".menu-holder").height($(".category-menu-list").outerHeight() - $(".menu-holder").offset().top + $(".category-menu-list").offset().top)}</script>
+				{% endif %}
+				{{ column_left }}
+			</div>
+			{% endif %}
+			{% if column_right %}
+			<div class="d-none d-lg-block col-lg-3 col-xl-mw260 order-3">
+				{{ column_right }}
+			</div>
+			{% endif %}
+			<div class="col-12 col-lg order-2">
+				{{ content_top }}
+			</div>
+		</div>
+
+		{% if ft_additional_position1 or ft_additional_position2 %}
+		<div class="row">
+			{% if ft_additional_position2 %}
+			<div class="col col-lg-3 col-xl-mw260 order-2">
+				{{ ft_additional_position2 }}
+			</div>
+			{% endif %}
+			{% if ft_additional_position1 %}
+			<div class="col-12 col-lg order-1">
+				{{ ft_additional_position1 }}
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+		
+		{% if ft_additional_position5 or ft_additional_position5 %}
+		<div class="row">
+			{% if ft_additional_position5 %}
+			<div class="col">
+				{{ ft_additional_position5 }}
+			</div>
+			{% endif %}
+			{% if ft_additional_position6 %}
+			<div class="col">
+				{{ ft_additional_position6 }}
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+		
+		{% if ft_additional_position3 or ft_additional_position4 %}
+		<div class="row">
+			{% if ft_additional_position4 %}
+			<div class="col col-lg-3 col-xl-mw260">
+				{{ ft_additional_position4 }}
+			</div>
+			{% endif %}
+			{% if ft_additional_position3 %}
+			<div class="col-12 col-lg">
+				{{ ft_additional_position3 }}
+			</div>
+			{% endif %}
+		</div>
+		{% endif %}
+
+		<div class="row">
+			<div class="col-12">
+				{{ content_bottom }}
+			</div>
+    </div>
+	</div>
+</div>
+{{ footer }}

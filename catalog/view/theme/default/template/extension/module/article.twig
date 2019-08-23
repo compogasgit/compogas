@@ -1,0 +1,34 @@
+{% if list_type == 1 %}
+	{% set icon_0 = 'folder-o' %}
+	{% set icon_1 = 'folder-open-o' %}
+{% else %}
+	{% set icon_0 = 'sticky-note-o' %}
+	{% set icon_1 = 'sticky-note-o' %}
+{% endif %}
+
+<h3>{{ heading_title }}</h3>
+	<div class="list-group cat-articles">
+		{% for article in articles %}
+			{% if article.article_id == article_id %}
+			          		<a href="{{ article.href }}" class="list-group-item active"><i class="fa fa-{{ icon_1 }}"></i> {{ article.name }}</a>
+		
+				{% if article.children %}
+					{% for child in article.children %}
+						{% if child.article_id == child_id %}
+				              		<a href="{{ child.href }}" class="list-group-item active child"><i class="fa fa-{{ icon_1 }}"></i> {{ child.name }}</a>
+				              	{% else %}
+				              		<a href="{{ child.href }}" class="list-group-item child"><i class="fa fa-{{ icon_0 }}"></i> {{ child.name }}</a>
+				              	{% endif %}
+			            	{% endfor %}
+			          {% endif %}
+			{% else %}
+				<a href="{{ article.href }}" class="list-group-item"><i class="fa fa-{{ icon_0 }}"></i> {{ article.name }}</a>
+	  		{% endif %}
+	  {% endfor %}
+	</div>
+
+	{% if list_type == 2 %}
+		{% if articles|length >= 20 %}
+			<div class="all-articles"><a href="<?php echo $articles_link; ?>"><i class="fa fa-bars"></i> <?php echo $text_all_articles; ?></a></div>
+		{% endif %}
+	{% endif %}

@@ -1,0 +1,50 @@
+{% if columns == 1 %}
+{% set class = 'col-12 col-lg-12' %}
+{% elseif columns == 2 %}
+{% set class = 'col-12 col-lg-6' %}
+{% elseif columns == 3 %}
+{% set class = 'col-12 col-md-6 col-lg-4' %}
+{% else %}
+{% set class = 'col-12 col-lg-3' %}
+{% endif %}
+<div class="row custom-blocks">
+	{% for block in blocks %}
+	<div class="col {{ class }} mb-3">
+		<div class="card custom-block h-100">
+			<div  class="card-body p-3">
+			{% if block.link %}
+			<span class="row">
+				<span class="col-auto">
+					<a href="{{ block.link }}">
+					{% if not block.html %}
+					<img src="{{ block.image }}" srcset="{{ block.image }} 1x, {{ block.image2x }} 2x, {{ block.image3x }} 3x, {{ block.image4x }} 4x" alt="{{ block.title }}" class="imf-fluid" />
+					{% else %}
+					{{ block.html }}
+					{% endif %}
+					</a>
+				</span>
+				<span class="col">
+					<span class="h6 mb-2 d-block title border-bottom pb-1"><a href="{{ block.link }}">{{ block.title }}</a></span>
+					<span class="d-block description">{{ block.description }}</span>
+				</span>
+			</span>
+			{% else %}
+				<span class="row">
+					<span class="col-auto">
+						{% if not block.html %}
+						<img src="{{ block.image }}" srcset="{{ block.image }} 1x, {{ block.image2x }} 2x, {{ block.image3x }} 3x, {{ block.image4x }} 4x" alt="{{ block.title }}" class="imf-fluid" />
+						{% else %}
+						{{ block.html }}
+						{% endif %}
+					</span>
+					<span class="col">
+						<span class="h6 mb-2 d-block title border-bottom pb-1">{{ block.title }}</span>
+						<span class="m-0 d-block description">{{ block.description }}</span>
+					</span>
+				</span>
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>

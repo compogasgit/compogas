@@ -1,0 +1,126 @@
+
+	+ account
+
+		+ voucher
+		+ wishlist
+		+ transaction
+		+ newsletter
+		+ affiliate
+		+ tracking
+		+ reward
+		+ forgotten
+		+ login
+		+ return_list
+		+ recurring_info
+		+ recurring_list
+		+ return_info
+		+ order_info
+		+ order_list
+		+ download
+		+ address_list		
+		+ account
+		+ password
+		+ edit
+		+ register
+		+ address_form
+		+ returnt_form
+
+		
+	+ affiliate
+	
+		+ login
+		+ register
+		
+		
+	+ checkout
+	
+		+ checkout
+		+ guest
+		+ guest_shipping
+		+ login
+		+ payment_address
+		+ register
+		+ shipping_address
+		+ payment_method
+		+ shipping_method
+		+ confirm
+		+ cart
+		
+
+	+ common 
+
+		+ column_left
+		+ column_right
+		+ content_top
+		+ content_bottom
+		+ currency
+		+ footer
+		+ header
+		+ language
+		+ maintenance
+		+ success
+		+ home
+		
+
+	+ error
+	
+		+ not_found
+		
+		
+	+ information
+	
+		+ information
+		+ sitemap
+		+ contact
+	 
+	 
+	- product
+		
+		+ compare
+		+ manufacrurer_list
+		+ category
+		+ special
+		+ manufacturer_info
+		+ search
+		- product
+		+ review
+		
+	- extension
+	
+		+ module
+			
+			+ information
+			+ account
+			+ filter
+			+ store
+			+ category
+			+ slideshow
+			+ banner
+			+ carousel
+			+ latest
+			+ bestseller
+			+ special
+			+ featured
+			
+
+		+ captcha
+		
+			+ basic
+			+ google
+		
+		+ payment
+		
+			+ free_checkout
+			+ bank_transfer
+			+ cheque
+			+ cod
+			
+		+ recurring
+		+ credit_card
+		+ total
+		
+			+ coupon
+			+ reward
+			+ shipping
+			+ voucher
+			

@@ -1,0 +1,52 @@
+{% if currencies|length > 1 %}
+<div class="btn-group">
+	<button class="btn btn-sm-ft btn-light dropdown-toggle" data-toggle="dropdown" aria-label="Currency">
+		{% for currency in currencies %}
+			{% if currency.code == code %}
+				{% if currency.symbol_left %}
+					<strong class="currency-symbol">{{ currency.symbol_left }}</strong>
+				{% elseif currency.symbol_right %}
+					<strong class="currency-symbol">{{ currency.symbol_right }}</strong>
+				{% endif %}
+				<span class="d-none d-lg-inline mx-1">{{ currency.code }}</span>
+			{% endif %}
+		{% endfor %}
+		<span class="si si-tin si-rem si-arrow">
+			<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+				<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+			</svg>
+		</span>
+	</button>
+	<div class="dropdown-menu">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="ft-form-currency">
+			{% for currency in currencies %}
+			{% if currency.symbol_left %}
+			{% if currency.code != code %}
+			<a href="#" class="dropdown-item currency-select">
+				<strong class="d-inline-block" style="color:#aaa;width: 1.5rem">{{ currency.symbol_left }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+				<input type="hidden" name="{{ currency.code }}" />
+			</a>
+			{% else %}
+			<span class="dropdown-item d-lg-none  font-weight-bold">
+				<strong class="d-inline-block" style="color:#aaa;width: 1.5rem">{{ currency.symbol_left }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+			</span>
+			{% endif%}
+			{% else %}
+			{% if currency.code != code %}
+			<a href="#" class="dropdown-item currency-select">
+				<strong class="d-inline-block" style="color:#aaa;width: 1.5rem">{{ currency.symbol_right }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+				<input type="hidden" name="{{ currency.code }}" />
+			</a>
+			{% else %}
+			<span class="dropdown-item d-lg-none font-weight-bold">
+				<strong class="d-inline-block" style="color:#aaa;width: 1.5rem">{{ currency.symbol_right }}</strong> {{ currency.code }} <small>({{ currency.title }})</small>
+			</span>
+			{% endif%}
+			{% endif %}
+			{% endfor %}
+			<input type="hidden" name="code" value="" />
+			<input type="hidden" name="redirect" value="{{ redirect }}" />
+		</form>
+	</div>
+</div>
+{% endif %}

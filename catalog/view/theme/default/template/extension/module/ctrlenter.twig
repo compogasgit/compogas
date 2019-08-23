@@ -1,0 +1,146 @@
+{% if (form) %}
+<!-- Modal ctrlEnterError form begin -->
+<div class="modal fade" id="ctrlEnterError" tabindex="-1" role="dialog" aria-labelledby="ctrlEnterErrorTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ctrlEnterErrorTitle">{{ text_heading }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="ctrlEnterForm" action="?route=module/ctrlenter/send" method="post" onsubmit="return ctrlEnterSend();">
+					<div class="form-group">
+						<input type="hidden" name="url" readonly="readonly">
+						<label for="ctrlEnterErrorText">{{ text_error }} </label>
+						<textarea class="form-control" id="ctrlEnterErrorText" name="errorText" readonly="readonly">{{ ctrlenter }}</textarea>
+					</div>
+					<div class="form-group">
+						<label for="ctrlEnterErrorComment">{{ text_comment }}</label>
+						<textarea class="form-control" id="ctrlEnterErrorComment" name="errorMessage"></textarea>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button onclick="ctrlEnterSend()" type="button" class="btn btn-primary" id="ctrlEnterErrorSend">{{ text_send }}</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ text_close }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal ctrlEnterError form end -->
+{% else %}
+<!-- ctrlEnterError text info begin -->
+<style>
+@media (max-width: 577px) {
+	.ctrlenter-btn {
+		display: none;
+	}
+}
+.ctrlenter-btn {
+	bottom: 0;
+	position: fixed;
+	right: 40px;
+	text-align: center;
+	cursor: pointer;
+	opacity: .5;
+	z-index: 11;
+}
+
+</style>
+<div id="ctrlenter" class="ctrlenter-btn">
+	<span class="btn btn btn-link" data-toggle="modal" onclick="ctrlEnterFormShow()">
+		{{ text_message }}
+	</span>
+</div>
+<!-- ctrlEnterError text info end -->
+
+<!-- ctrlEnterError scripts begin -->
+<script>
+
+	$('body').ready(function() {
+
+		$(document).keypress(function(e) {
+			if ( ( e.keyCode == 10 || e.keyCode == 13) && e.ctrlKey ) {
+				ctrlEnterFormShow();
+				$('#ctrlEnterError').modal('show');
+			}
+			// Прячем модальное окно по Esc
+			if ( e.keyCode === 27 ) {
+				$('#ctrlEnterError').modal('hide');
+			}
+		});
+	});
+
+	function ctrlEnterGetSelectedText(){
+		var errorTextSelected = '';
+
+		if(navigator.appName=='Microsoft Internet Explorer'){
+			if(document.selection.createRange()){
+				errorTextSelected = document.selection.createRange().text;
+			}
+		} else {
+			if(window.getSelection()) {
+				errorTextSelected = window.getSelection();
+			} else if(document.getSelection()) {
+				errorTextSelected = document.getSelection();
+			}
+		}
+
+		return errorTextSelected;
+	}
+
+	function ctrlEnterFormShow() {
+		var ctrlEnterForm = $('#ctrlEnterError');
+		var selectedText = ctrlEnterGetSelectedText();
+
+		if (ctrlEnterForm.length) {
+			ctrlEnterForm.find('[name="errorText"]').val(selectedText);
+			$('#ctrlEnterError').modal('show');
+			
+		} else {
+			$.ajax({
+				url:'index.php?route=extension/module/ctrlenter/get',
+				type:'post',
+				data:'ctrlenter='+selectedText,
+				dataType:'html',
+				success:function(e){
+					var ctrlEnterForm=$('body').append(e);
+					$('#ctrlEnterError').modal('show');
+				}
+			})
+		}
+	}
+
+	function ctrlEnterSend(){
+		var errorTextInput=$('[name="errorText"]').val().substring(0,100);
+		var messageError=$('[name="errorMessage"]').val().substring(0,100);
+		var urlError=location.href;
+		var dataError={'ctrlenter':errorTextInput,'message':messageError,'url':urlError};
+		$.ajax({
+			url:'index.php?route=extension/module/ctrlenter/send',
+			type:'post',
+			data:dataError,
+			dataType:'json',
+			success:function(e){
+				$('body').append(e['form']);
+				if(e['error']){
+					$('#ctrlEnterError').modal('hide');
+					$('#errorFormText').html(e['error']);
+					$('#errorForm').modal('show');
+					$('#ctrlEnterErrorComment').val('');
+				}
+				if(e['success']){
+					$('#ctrlEnterError').modal('hide');
+					$('#thanksErrorFormText').html(e['success']);
+					$('#thanksErrorForm').modal('show');
+					$('#ctrlEnterErrorComment').val('');
+				}
+			}
+		})
+		
+	}
+</script>
+<!-- ctrlEnterError scripts end -->
+{% endif %}

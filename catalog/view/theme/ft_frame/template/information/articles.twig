@@ -1,0 +1,117 @@
+{{ header }}
+<div class="container">
+  	<div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item">
+						<a href="{{ breadcrumb.href }}">
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+						</a>
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% else %}
+					<li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+		{{ content_top }}
+		<h1 class="h2 mb-3">{{ heading_title }}</h1>
+		{% set content = articles_description|striptags %}
+		{{ content ? articles_description }}
+		<div class="box-articles">
+
+		{% if articles %}
+		
+		{% if column_left and column_right %}
+		{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-lg-4 col-md-4 col-sm-6 col-xs-12' %}
+		{% else %}
+		{% set class = 'col-lg-3 col-md-3 col-sm-6 col-xs-12' %}
+		{% endif %}
+
+		{% if latest_articles %}
+		{{ list_type == 2 ? '<div class="row ac-line">' }}
+			{% for article in latest_articles %}
+				<div class="{{ list_type == 2 ? 'articles-grid' ~ class : 'articles-list' }}">
+					<div class="articles-item h-100">
+					{% if article.thumb %}
+						<div class="article-image"><a {{ article.external ? 'class="external" id="img_' ~ article.article_id ~ '"' }} href="{{ article.href }}"><img src="{{ article.thumb }}" title="{{ article.name }}" alt="{{ article.name }}" /></a></div>
+					{% endif %}	
+					<div class="description">
+						<div class="name"><a {{ article.external ? 'class="external" id="link_' ~ article.article_id ~ '"' }} href="{{ article.href }}">{{ article.name }}</a></div>
+			
+						{% if article.description %}
+							<div class="ac-snippet">{{ article.description }}</div>
+						{% endif %}
+			
+						{% if show_date or show_views or show_readmore %}
+							<div class="add-info">
+								{% if show_date %}
+									<span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+								{% endif %}
+					
+								{% if show_views %}
+									<span class="article-viewed"><i class="fa fa-eye"></i> {{ article.viewed }}</span>
+								{% endif %}
+					
+								{% if article.description and show_readmore %}
+									<a {{ article.external ? 'class="art-readmore external" id="more_' ~ article.article_id : 'class="art-readmore"' }} href="{{ article.href }}"><i class="fa fa-share-square-o"></i> {{ text_readmore }}</a>
+								{% endif %}
+							</div>
+						{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+		{{ list_type == 2 ? '</div>' }}
+		<br />
+		<div class="row">
+			<div class="col-sm-6 text-left">{{ pagination }}</div>
+			<div class="col-sm-6 text-right">{{ results }}</div>
+		</div>
+		{% endif %}
+
+		{% else %}
+			<p>{{ text_no_articles }}</p>
+		{% endif %}
+		</div>
+		{{ content_bottom }}</div>
+		</div>
+		</div>
+
+		<script><!--
+			$('.external').click(function(){
+				var id = this.id.replace(/[^0-9]/g, '');
+				$.ajax({
+					url: 'index.php?route=information/article/updateViewed',
+					type: 'post',
+					data: 'article_id=' + id,
+					dataType: 'html'	
+				});
+			});
+		//--></script>
+{{ footer }} 

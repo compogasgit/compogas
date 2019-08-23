@@ -1,0 +1,146 @@
+<div class="ft_search-wrapper mb-3 position-relative">
+	<div id="ft_search" class="input-group">
+		{% if categories %}
+		<div class="input-group-prepend">
+			<button class="btn btn-lg-ft btn-light border-like-form dropdown-toggle select-button pr-md-2" type="button" data-toggle="dropdown" aria-label="{{ category_name }}">
+				<span class="select-text d-none d-md-block float-left text-truncate">{{ category_name }}</span>
+				<span class="si si-rem si-arrow">
+					<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+					</svg>
+				</span>
+			</button>
+			<div class="dropdown-menu select-list">
+				<a class="dropdown-item active" href="#" onclick="return false" data-category="0">{{ text_anywhere }}</a>
+				{% for category in categories %}
+				<a class="dropdown-item" href="#" onclick="return false" data-category="{{ category.category_id }}">{{ category.name }}</a>
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+		<input type="search" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control text-center text-md-left" aria-label="{{ text_search }}" />
+		<input class="selected-category" type="hidden" name="category_id" value="{{ category_id }}" />
+		<div class="input-group-append">
+			<button type="button" class="btn btn-lg-ft btn-light border-like-form search-button" aria-label="{{ text_search }}">
+				<span class="si">
+					<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+					</svg>
+				</span>
+			</button>
+		</div>
+	</div>
+	{% if livesearch_toggle %}
+	<div class="dropdown w-100"><div class="livesearch dropdown-menu p-0 border-like w-100 "></div></div>
+	{% endif %}
+</div>
+{% if livesearch_toggle %}
+{% if mask %}
+<div class="ft-search-mask position-fixed"></div>
+{% endif %}
+<script>
+$(function() {
+	$('#ft_search input[name=\'search\']').autocomplete({
+		'source': function(request, response) {
+			var search_text = $('#ft_search input[name=\'search\']').val();
+			var cat_id = parseInt($('.selected-category').val());
+
+			if (search_text.length < {{ characters }}) {
+				$('.livesearch').css('display','none');
+				$('body').removeClass('search-blured');
+			} else {
+
+				$('.livesearch').html('<a class="dropdown-item text-center disabled py-3"><span class="si loading-icon"><svg class="spinner" width="24" height="24" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></span></a>');
+
+				$('.livesearch').css('display','block');
+				$('body').addClass('search-blured');
+
+				var url = '',
+						url_all = '';
+
+				url += 'index.php?route=extension/module/frametheme/ft_search/livesearch&search=' + encodeURIComponent(search_text);
+				url_all += 'index.php?route=product/search&search=' + encodeURIComponent(search_text);
+
+				if (cat_id) {
+					url += '&category_id=' + encodeURIComponent(cat_id);
+					url_all +='&category_id=' + encodeURIComponent(cat_id);
+				}
+
+				{% if subcat_search %}
+					url += '&sub_category=true';
+					url_all +='&sub_category=true';
+				{% endif %}
+
+				{% if description_search %}
+					url += '&description=true';
+					url_all +='&description=true';
+				{% endif %}
+
+				$.ajax({
+					url: url,
+					dataType: 'json',
+					success: function(json) {
+
+						var products = json.products;
+						$('.livesearch a').remove();
+
+						if (!$.isEmptyObject(products)) {
+
+							$.each(products, function(index,product) {
+
+								var html = '';
+								html += '<a class="dropdown-item py-2 rounded-top border-bottom" href="' + product.href + '" title="' + product.name + '">';
+								html += '<span class="row no-gutters">';
+
+								if (product.thumb) {
+									html += '<span class="col-auto"><img alt="' + product.name + '" src="' + product.thumb + '" srcset="' + product.thumb + ' 1x, ' + product.thumb2x + ' 2x, ' + product.thumb3x + ' 3x, ' + product.thumb4x + ' 4x" class="border rounded my-1 mr-4"></span>';
+								}
+
+								html += '<span class="col">';
+								html += '<span class="d-block product-name">' + product.name + '</span>';
+
+								{% if show_description %}
+								html += '<small class="d-block ">' + product.description + '</small>';
+								{% endif %}
+
+								if(product.price){
+									if (product.special) {
+										html += '<span class="d-block"><s class="text-danger mr-2">' + product.price + '</s>' + product.special + '</span>';
+									} else {
+										html += '<span class="d-block">' + product.price + '</span>';
+									}
+								}
+
+								html += '</span>';
+								html += '</span>';
+								html += '</a>';
+
+								$('.livesearch').append(html);
+
+							});
+
+							$('.livesearch').append('<a class="dropdown-item rounded text-center result-text" href="' + url_all + '"><small class="d-block py-1">{{ text_all_results }} (' + json.total + ')</small></a>');
+
+						} else {
+							$('.livesearch').html('<span class="dropdown-item rounded text-center disabled py-3">{{ text_no_results }}</span>');
+						}
+
+						$('.livesearch').css('display','block');
+						$('body').addClass('search-blured');
+
+						return false;
+					}
+				});
+			}
+		}
+	});
+	$(document).bind( "mouseup touchend", function(e){
+		var container = $('.livesearch');
+		if (!container.is(e.target) && container.has(e.target).length === 0){
+			container.hide();
+			$('body').removeClass('search-blured');
+		}
+	});
+});
+</script>
+{% endif %}

@@ -1,0 +1,22 @@
+{% if links_status and links %}
+<div class="btn-group">
+	<a class="btn btn-sm-ft btn-light pl-1 dropdown-toggle" href="#" title="Помощь" data-toggle="dropdown">
+		<span class="si si-rem">
+			<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+				<path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+			</svg>
+		</span>
+		<span class="d-none d-lg-inline mx-1">{{ links_title }}</span>
+		<span class="si si-tin si-rem si-arrow">
+			<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
+				<path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+			</svg>
+		</span>
+	</a>
+	<div class="dropdown-menu dropdown-menu-right">
+		{% for link in links %}
+		<a class="dropdown-item" href="{{ link.href }}">{{ link.title }}</a>
+		{% endfor %}
+	</div>
+</div>
+{% endif %}

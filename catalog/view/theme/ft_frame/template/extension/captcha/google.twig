@@ -1,0 +1,17 @@
+<div>
+	<script src="//www.google.com/recaptcha/api.js" type="text/javascript"></script>
+  {% if route|slice(0, 9) == 'checkout/' %}<h5>{{ text_captcha }}</h5>{% endif %}
+  <div class="form-group required text-nowrap text-truncate">
+		{% if route|slice(0, 9) == 'checkout/' %}
+    <div id="input-payment-captcha" class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+    {% if error_captcha %}
+    <div class="text-danger">{{ error_captcha }}</div>
+    {% endif %}
+    {% else %}
+		<div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+		{% if error_captcha %}
+		<div class="text-danger">{{ error_captcha }}</div>
+		{% endif %}
+    {% endif %}
+	</div>
+</div>

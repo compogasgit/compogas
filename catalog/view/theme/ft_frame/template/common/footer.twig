@@ -1,0 +1,17 @@
+		</div>
+		<footer class="m-blured mb-5 mt-4">
+			{{ ft_fmap }}
+			{{ ft_footer }}
+			{{ ft_modal }}
+		</footer>
+		<div id="scrll-on-top" class="position-fixed rounded-circle bg-secondary p-1" onclick="$('html, body').animate({ scrollTop: 0 }, 500);">
+			<svg class="d-block" width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path fill="#fff" d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+			</svg>
+		</div>
+		{% for script in scripts %}
+		<script src="{{ script }}"></script>
+		{% endfor %}
+		{{ cust_code }}
+	</body>
+</html>

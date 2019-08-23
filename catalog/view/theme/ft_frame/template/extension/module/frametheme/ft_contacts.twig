@@ -1,0 +1,330 @@
+{% if contacts_status %}
+<div class="d-table w-100 h-100">
+	<div class="d-table-cell w-100 h-100 align-middle">
+		<div id="h-contacts" class="text-center text-lg-left">
+			<div class="row justify-content-center no-gutters">
+				<div class="col-auto">
+					<div class="d-table w-100 h-100">
+						<div class="d-table-cell w-100 h-100 align-middle">
+							<div class="h5 mb-1 mr-2">
+								{% if main_phone_href %}
+								<a href="{{ main_phone_href }}">
+									<span class="si">
+										<svg class="d-block position-absolute" fill="#ccc" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+										</svg>
+									</span>
+								</a>
+								{% else %}
+								<span class="si">
+									<svg class="d-block position-absolute" fill="#ccc" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+									</svg>
+								</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-auto">
+					<div class="h5 mb-1 phone-number">{{ main_phone }}</div>
+				</div>
+				{% if additional_contacts_status or callback_status %}
+				<div class="col-auto">
+					<div class="d-table w-100 h-100">
+						<div class="d-table-cell w-100 h-100 align-middle">
+							<div class="h5 mb-1 ml-2">
+								<a href="#ft-header-contacts" data-toggle="modal">
+									<span class="si">
+										<svg class="d-block position-absolute" fill="#ccc" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+										</svg>
+									</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+			{% if main_hint %}
+			<span class="hint text-muted ml-lg-1">{{ main_hint }}</span>
+			{% endif %}
+			{% if additional_contacts_status or callback_status %}
+			<div class="modal fade" id="ft-header-contacts" tabindex="-1" role="dialog">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content text-left">
+						<div class="modal-header no-gutters">
+							<div class="col-auto">
+								<div class="h5 modal-title modal-h-icon mr-2">
+									<a href="{{ all_contacts_link }}">
+										<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z"/>
+										</svg>
+									</a>
+								</div>
+							</div>
+							<div class="col">
+								<h5 class="modal-title">
+									<a href="{{ all_contacts_link }}">{{ ft_heading_title }}</a>
+								</h5>
+							</div>
+							<div class="col-auto">
+								<div class="h5 modal-title modal-h-icon ml-2" data-dismiss="modal">
+									<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+									</svg>
+								</div>
+							</div>
+						</div>
+						<div class="modal-body">
+							<ul class="nav nav-pills nav-pills-sm mb-3">
+								{% if additional_contacts_status %}
+								<li class="nav-item"><a class="nav-link active" href="#tab-contacts" data-toggle="tab">{{ ft_contacts_tab }}</a></li>
+								{% endif %}
+								{% if callback_status %}
+								<li class="nav-item"><a class="nav-link" href="#tab-callback" data-toggle="tab">{{ callback_button_text }}</a></li>
+								{% endif %}
+							</ul>
+							<div class="tab-content">
+								{% if additional_contacts_status %}
+								<div class="tab-pane active" id="tab-contacts">
+									{% if additional_phones %}
+									<div>
+										<hr class="my-2">
+										{% set i = 0 %}
+										{% for phone in additional_phones %}
+										{% set i = i + 1 %}
+										<div class="row no-gutters">
+											{% if phone.image %}
+											<div class="col-auto">
+												<div class="d-table w-100 h-100">
+													<div class="d-table-cell w-100 h-100 align-middle">
+														<div class="h5 m-0 mr-3" >
+															<img class="d-block" src="{{ phone.image }}" srcset="{{ phone.image }} 1x, {{ phone.image2x }} 2x, {{ phone.image3x }} 3x, {{ phone.image4x }} 4x" alt="" />
+														</div>
+													</div>
+												</div>
+											</div>
+											{% endif %}
+											<div class="col">
+												<div class="d-table w-100 h-100">
+													<div class="d-table-cell w-100 h-100 align-middle">
+														<div class="h6 m-0 ">{{ phone.title }}</div>
+													</div>
+												</div>
+											</div>
+											{% if phone.href or phone.hint_text %}
+											<div class="col-auto">
+												<div class="d-table w-100 h-100">
+													<div class="d-table-cell w-100 h-100 align-middle">
+														{% if phone.hint_text %}
+														<a href="#clarification-{{ i }}" data-toggle="collapse" class="btn btn-sm btn-link {% if not phone.hint_show %} collapsed {% endif %}">
+															<svg class="d-block" fill="#ccc" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/>
+															</svg>
+														</a>
+														{% endif %}
+														{% if phone.href %}
+														<a href="{{ phone.href }}" class="btn btn-sm btn-success">
+															<svg class="d-block" fill="#fff" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+															</svg>
+														</a>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+											{% endif %}
+										</div>
+										{% if phone.hint_text %}
+										<div class="collapse {% if phone.hint_show %} show {% endif %}" id="clarification-{{ i }}">
+											<small class="d-block text-muted mt-1">{{ phone.hint_text }}</small>
+										</div>
+										{% endif %}
+										<hr class="my-2">
+										{% endfor %}
+									</div>
+									{% endif %}
+									{% if other_contacts %}
+									{% if additional_phones and not other_contacts_show %}
+									<div class="mt-3 ">
+										<a href="#more-contacts" data-toggle="collapse" class="unbordered-link {% if not other_contacts_show %} collapsed {% endif %}">{{ ft_text_more }}</a>
+									</div>
+									{% endif %}
+									<div class="collapse {% if other_contacts_show or not additional_phones %} show {% endif %}" id="more-contacts">
+										<div class="h6 mb-0 pt-1 font-weight-normal">
+											{% for contact in other_contacts %}
+											<div class="mt-2">
+												<div class="row no-gutters">
+													{% if contact.image %}
+													<div class="col-auto">
+														<img src="{{ contact.image }}" srcset="{{ contact.image }} 1x, {{ contact.image2x }} 2x, {{ contact.image3x }} 3x, {{ contact.image4x }} 4x" alt="{{ contact.title }}" class="d-block mr-2"/>
+													</div>
+													{% endif %}
+													<div class="col">
+														<a href="{{ contact.href }}" {% if contact.target %} target="_blank" {% endif %}>{{ contact.title }}</a>
+														{% if contact.hint %}
+														<span class="text-muted">{{ contact.hint }}</span>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+											{% endfor %}
+										</div>
+									</div>
+									{% endif %}
+								</div>
+								{% endif %}
+								{% if callback_status %}
+								<div class="tab-pane" id="tab-callback">
+									<div>
+										<form id="ft-callback-form">
+											<div class="form-row">
+												<div class="col-12 mb-2">
+													<div class="ft-input-grope-iconic">
+														<span class="ft-icon-wrapper">
+															<svg class="ft-icon" fill="#ddd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+																<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+															</svg>
+														</span>
+														<input type="text" name="c_name" class="form-control form-iconic" placeholder="{{ ft_entry_name }}" value="{{ customer_name }}">
+													</div>
+												</div>
+												<div class="col-12 mb-2">
+													<div class="ft-input-grope-iconic">
+														<span class="ft-icon-wrapper">
+															<svg class="ft-icon" fill="#ddd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+																<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+															</svg>
+														</span>
+														<input type="tel" name="c_phone" {% if phone_mask %}data-mask="{{ phone_mask }}"{% endif %} class="form-control form-iconic" placeholder="{{ ft_entry_phone }}" value="{{ customer_telephone }}">
+													</div>
+												</div>
+												<div class="col-12">
+													<div class="comment-show">
+														<a href="#ft-header-contacts-comment" class="unbordered-link" data-toggle="collapse" onclick="$('#ft-header-contacts .comment-show').slideToggle(350)">{{ ft_text_comment }}</a>
+													</div>
+													<div class="collapse position-relative" id="ft-header-contacts-comment">
+														<div class="comment-hide position-absolute p-2">
+															<a data-toggle="collapse" href="#ft-header-contacts-comment" onclick="$('#ft-header-contacts .comment-show').slideToggle(350)">
+																<svg class="d-block" height="18" width="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																	<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+																</svg>
+															</a>
+														</div>
+														<textarea name="c_comment" class="form-control pr-5" rows="3" placeholder="{{ ft_entry_comment }}"></textarea>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div class="my-2">
+										{{ callback_hint }}
+									</div>
+									<div class="text-right">
+										<button type="button" class="btn btn-primary" id="ft-callback-send" onclick="ft_callback()">
+											<span class="si si-18 loading-icon mr-2">
+												<svg class="spinner light" width="18" height="18" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+													 <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+												</svg>
+											</span>
+											{{ ft_text_send_button }}
+										</button>
+									</div>
+									<script>
+										function ft_callback() {
+
+											$('#ft-callback-form input').removeClass('border-danger');
+											$('#ft-callback-form .text-danger').remove();
+											
+											$.ajax({
+												url: 'index.php?route=extension/module/frametheme/ft_contacts/callback',
+												type: 'post',
+												data: $('#ft-callback-form').serialize(),
+												dataType: 'json',
+												beforeSend: function() {
+												
+													$('#ft-callback-send').addClass('loading').attr('disabled','diasbled');
+													
+												},
+												complete: function() {
+												
+													$('#ft-callback-send').removeClass('loading').removeAttr('disabled');
+													
+												},
+												success: function(json) {
+												
+													if (!json['error']) {
+													
+														$('#ft-callback-form').parent().html('<div class="h6 mt-4">' + json['success'] + '</div>');
+														$('#ft-callback-send').remove();
+														
+													} else {
+													
+														if (json['error']['name']) {
+															$('#ft-callback-form input[name=\'c_name\']').addClass('border-danger');
+															$('#ft-callback-form input[name=\'c_name\']').parent().after('<small class="d-block text-danger">' + json['error']['name'] + '</small>');
+														}
+														
+														if (json['error']['phone']) {
+															$('#ft-callback-form input[name=\'c_phone\']').addClass('border-danger');
+															$('#ft-callback-form input[name=\'c_phone\']').parent().after('<small class="d-block text-danger">' + json['error']['phone'] + '</small>');
+														}
+														
+													}
+													
+												},
+												error: function(xhr, ajaxOptions, thrownError) {
+													console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+												}
+											});
+										}
+
+					
+									function ft_contacts_run_scripts() {
+										$('#ft-header-contacts-comment').on('shown.bs.collapse', function () {
+											$(this).find('textarea').focus();
+										});
+										
+										$('#ft-header-contacts').on('hidden.bs.modal', function (e) {
+											$('#ft-callback-form input').removeClass('border-danger');
+											$('#ft-callback-form .text-danger').remove();
+										});
+
+										{% if not additional_contacts_status %}
+										$('#ft-header-contacts').on('show.bs.modal', function (e) {
+											$('#ft-header-contacts a[href=\'#tab-callback\']').trigger('click');
+										});
+										{% endif %}
+									}
+									
+									ft_contacts_run_scripts();
+									
+									if ($('input[data-mask]').length > 0) {
+										if (typeof jQuery().mask != 'function') {
+											$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/masked-input/jquery.maskedinput.min.js", function( data, textStatus, jqxhr ) {
+												$('input[data-mask]').each(function() {
+													$(this).mask($(this).attr('data-mask'));
+												});
+											});
+										} else {
+											$('input[data-mask]').each(function() {
+												$(this).mask($(this).attr('data-mask'));
+											});
+										}
+									}
+
+									</script>
+								</div>
+								{% endif %}								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endif %}	
+		</div>
+	</div>
+</div>
+{% endif %}	

@@ -1,0 +1,15 @@
+{% if svg_logo_status %}
+  {% if not on_home %}
+    <a href="{{ home }}" aria-label="Logo">{{ svg_logo }}</a>
+  {% else %}
+    {{ svg_logo }}
+  {% endif %}
+{% else %}
+  {% if logo %}
+    {% if not on_home %}
+      <a href="{{ home }}" aria-label="Logo"><img src="{{ logo1x }}" srcset="{{ logo1x }} 1x, {{ logo2x }} 2x, {{ logo3x }} 3x, {{ logo4x }} 4x" title="{{ name }}" alt="{{ name }}" class="img-fluid" /></a>
+    {% else %}
+      <img src="{{ logo1x }}" srcset="{{ logo1x }} 1x, {{ logo2x }} 2x, {{ logo3x }} 3x, {{ logo4x }} 4x" title="{{ name }}" alt="{{ name }}" class="img-fluid" />
+    {% endif %}
+  {% endif %}
+{% endif %}

@@ -1,0 +1,116 @@
+{{ header }}
+<div class="container">
+	<ul class="breadcrumb">
+		{% set array = breadcrumbs %}
+		{% set breadcrumbs = array|slice(0,-1) %}
+		{% set current = array|last %}
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+			<li>{{ current.text }}</li>
+	</ul>
+  	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+		{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-sm-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+
+		<div id="content" class="{{ class }}">{{ content_top }}
+		<h1>{{ heading_title }}</h1>
+		{% set content = articles_description|striptags %}
+		{{ content ? articles_description }}
+		<div class="box-articles">
+
+		{% if articles %}
+		
+		{% if column_left and column_right %}
+		{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-lg-4 col-md-4 col-sm-6 col-xs-12' %}
+		{% else %}
+		{% set class = 'col-lg-3 col-md-4 col-sm-6 col-xs-12' %}
+		{% endif %}
+
+     		<div class="row cat-block ac-line">
+		{% for article in articles %}
+			{% if article.children %}
+			<div class="art_category {{ class }}">
+				<div class="product-thumb transition">
+					<a href="{{ article.href }}">
+						{% if article.thumb_category %}
+					      		<div class="image"><img src="{{ article['thumb_category'] }}" alt="{{ article.name }}" /></div>
+					      {% endif %}
+						<div class="name"><h3><i class="fa fa-bars"></i> {{ article.name }}</h3></div>
+					</a>
+				</div>
+			</div>
+			{% endif %}
+		{% endfor %}
+    		</div>
+
+		{% if latest_articles %}
+		{{  list_type == 2 ? '<div class="row ac-line">' }}
+			{% for article in latest_articles %}
+				<div class="{{ list_type == 2 ? 'articles-grid ' ~ class : 'articles-list' }}">
+					<div>
+					{% if article.thumb %}
+						<div class="article-image"><a {{ article.external ? 'class="external" id="img_' ~ article.article_id ~ '"' }} href="{{ article.href }}"><img src="{{ article.thumb }}" title="{{ article.name }}" alt="{{ article.name }}" /></a></div>
+				      {% endif %}	
+				      <div class="description">
+						<div class="name"><a {{ article.external ? 'class="external" id="link_' ~ article.article_id ~ '"' }} href="{{ article.href }}">{{ article.name }}</a></div>
+			
+						{% if article.description %}
+							<div class="ac-snippet">{{ article.description }}</div>
+				      		{% endif %}
+			
+						{% if show_date or show_views or show_readmore %}
+							<div class="add-info">
+								{% if show_date %}
+									<span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+								{% endif %}
+					
+								{% if show_views %}
+									<span class="article-viewed"><i class="fa fa-eye"></i> {{ article.viewed }}</span>
+								{% endif %}
+					
+								{% if article.description and show_readmore %}
+									<a {{ article.external ? 'class="art-readmore external" id="more_' ~ article.article_id : 'class="art-readmore"' }} href="{{ article.href }}"><i class="fa fa-share-square-o"></i> {{ text_readmore }}</a>
+								{% endif %}
+							</div>
+						{% endif %}
+					</div>
+					</div>
+				</div>
+			{% endfor %}
+
+		{{ list_type == 2 ? '</div>' }}
+		<br />
+		<div class="row">
+			<div class="col-sm-6 text-left">{{ pagination }}</div>
+			<div class="col-sm-6 text-right">{{ results }}</div>
+		</div>
+		{% endif %}
+
+		{% else %}
+			<p>{{ text_no_articles }}</p>
+		{% endif %}
+		</div>    
+		{{ content_bottom }}</div>
+		{{ column_right }}</div>
+		</div>
+
+		<script><!--
+			$('.external').click(function(){
+				var id = this.id.replace(/[^0-9]/g, '');
+				$.ajax({
+					url: 'index.php?route=information/article/updateViewed',
+					type: 'post',
+					data: 'article_id=' + id,
+					dataType: 'html'	
+				});
+			});
+		//--></script>
+{{ footer }} 

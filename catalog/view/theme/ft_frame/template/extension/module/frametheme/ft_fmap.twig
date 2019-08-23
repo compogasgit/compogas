@@ -1,0 +1,170 @@
+{% if fmap_status and fmap_api_key and geocode and not ((mobile or tablet) and mobile_hide) %}
+<div id="f-map" class="position-relative">
+	<div class="container h-100">
+		<div class="position-relative h-100">
+			<div id="f-map-inner" class="position-relative h-100"></div>
+			<div class="f-controls position-absolute mt-2">
+				<div class="container">
+					<div class="row">
+						<div class="col-auto mr-auto">
+							<div class="p-2 rounded-circle border border-like-form bg-white">
+								<a href="{% if fmap_brand == 'google' %}https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ language }}&t=m&z=15{% elseif fmap_brand == 'yandex' %}https://maps.yandex.ru/?text={{ geocode|url_encode }}&z=15{% endif %}" target="_blank" rel="noopener" class="btn btn-primary p-2 rounded-circle" title="{{ text_open_link }}" aria-label="Map">
+									<svg class="d-block" fill="#fff" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+										<path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+									</svg>
+								</a>
+							</div>
+						</div>
+						<div class="col-auto ml-auto">
+							<div class="p-2 rounded-circle border border-like-form bg-white">
+								<button class="btn btn-primary p-2 rounded-circle" onclick="f_map.toggle('f-map','250'); intFootterMap()" title="{{ text_close_map }}" aria-label="Close Map">
+									<svg class="d-block" fill="#fff" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+										<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="f-glass position-absolute"></div>
+		</div>
+	</div>
+
+	<div class="fm-toggle position-absolute rounded-circle border border-like-form">
+		<div class="position-relative rounded-circle p-2 bg-white">
+			<button onclick="f_map.toggle('f-map', 250); intFootterMap()" type="button" class="btn btn-danger p-2 rounded-circle" title="{{ text_show_map }}" aria-label="Show Map">
+				<svg class="d-block" fill="#fff" height="18" width="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+				</svg>
+			</button>
+		</div>
+	</div>
+	<input id="fmap-geocode" name="geocode" type="hidden" value="{{ geocode }}">
+	{% if fmap_brand == 'google'  %}
+	<script>
+		var f_map = {
+			'toggle': function (map_wrapper, duration) {
+				var dMap = document.getElementById(map_wrapper),
+						jMap = $(dMap);
+
+				jMap.toggleClass('fm-show');
+
+				$('body').toggleClass('fm-open');
+
+				$('html, body').animate({
+					scrollTop: jMap.offset().top
+				}, duration);
+			},
+			'int': function (map_inner, loc_str) {
+				var loc_arr = loc_str.split(','),
+						loc = {lat: Number(loc_arr[0]), lng: Number(loc_arr[1])};
+						gMap = document.getElementById(map_inner);
+
+				var fMap = new google.maps.Map(gMap, {
+					zoom: 15,
+					center: loc,
+					gestureHandling: 'auto',
+					zoomControl: false,
+					mapTypeControl: false,
+					scaleControl: false,
+					streetViewControl: false,
+					rotateControl: true,
+					fullscreenControl: false
+				});
+
+				var marker = new google.maps.Marker({
+					position: loc,
+					map: fMap
+				});
+			}
+		}
+
+		var intFootterMap = function () {
+			var geocode = document.getElementById('fmap-geocode').value;
+			f_map.int('f-map-inner', geocode)
+		}
+
+		window.addEventListener("orientationchange", function () {
+			setTimeout(function () {
+				intFootterMap();
+				if ($('#f-map').hasClass('fm-show')) {
+					$('html, body').animate({
+						scrollTop: $('#f-map').offset().top
+					}, 100);
+				}
+			}, 500);
+		});
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key={{ fmap_api_key }}&language={{ language }}&callback=intFootterMap" async defer></script>
+	{% elseif fmap_brand == 'yandex' %}
+	<script>
+		var f_map = {
+			'toggle': function (map_wrapper, duration) {
+				var dMap = document.getElementById(map_wrapper),
+						jMap = $(dMap);
+
+				jMap.toggleClass('fm-show');
+
+				$('body').toggleClass('fm-open');
+
+				$('html, body').animate({
+					scrollTop: jMap.offset().top
+				}, duration);
+			},
+			'int': function (map_inner, loc_str) {
+				var loc_arr = loc_str.split(','),
+						loc = [Number(loc_arr[0]), Number(loc_arr[1])];
+
+					if (typeof window.issMap != "undefined"){
+						window.issMap.container.fitToViewport();
+					} else {
+						fMap = new ymaps.Map(map_inner, {
+	            center: loc,
+							controls: [],
+	            zoom: 16
+		        });
+
+						var marker = new ymaps.Placemark(loc, {}, {
+						    preset: "islands#redDotIcon",
+						    iconColor: '#ff0000'
+						});
+
+						fMap.geoObjects.add(marker);
+					}
+
+					window.issMap = fMap;
+			}
+		}
+		var intFootterMap = function () {
+			var geocode = document.getElementById('fmap-geocode').value;
+			f_map.int('f-map-inner', geocode)
+		}
+
+		window.addEventListener("orientationchange", function () {
+			setTimeout(function () {
+				intFootterMap();
+				if ($('#f-map').hasClass('fm-show')) {
+					$('html, body').animate({
+						scrollTop: $('#f-map').offset().top
+					}, 100);
+				}
+			}, 500);
+		});
+	</script>
+	<script src="https://api-maps.yandex.ru/2.1/?apikey={{ fmap_api_key }}&lang={{ language }}&onload=intFootterMap"></script>
+	{% endif %}
+</div>
+{% elseif fmap_status and fmap_api_key and geocode  %}
+<div id="f-map-mobile" class="position-relative">
+	<div class="fm-toggle position-absolute rounded-circle border border-like-form">
+		<div class="position-relative rounded-circle p-2 bg-white">
+			<a href="{% if fmap_brand == 'google' %}https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ language }}&t=m&z=15{% elseif fmap_brand == 'yandex' %}https://maps.yandex.ru/?text={{ geocode|url_encode }}&z=15{% endif %}" target="_blank" rel="noopener" class="btn btn-danger p-2 rounded-circle" aria-label="Show Map">
+				<svg class="d-block" fill="#fff" height="18" width="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+				</svg>
+			</a>
+		</div>
+	</div>
+</div>
+{% endif %}

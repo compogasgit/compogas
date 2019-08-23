@@ -1,0 +1,1380 @@
+{{ header }}
+<div id="product-product" class="container" itemscope itemtype="http://schema.org/Product">
+
+  <div class="row">
+    <div id="content" class="col-12 col-lg order-lg-2">
+			{{ content_top }}
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+						<a href="{{ breadcrumb.href }}"  itemprop="item">
+              <meta itemprop="name" content="{{ g_text_home }}" />
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+            </a>
+            <meta itemprop="position" content="{{ i }}" />
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+            <a href="{{ breadcrumb.href }}" itemprop="item">
+              <span itemprop="name">{{ breadcrumb.text }}</span>
+            </a>
+            <meta itemprop="position" content="{{ i }}" />
+
+          </li>
+					{% else %}
+					<li class="breadcrumb-item active">
+            <span>{{ breadcrumb.text }}</span>
+          </li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+			<h1 class="h2 mb-4" itemprop="name">{{ heading_title }}</h1>
+				<div class="metaproduct bg-light border rounded py-2 px-3 mb-4">
+					<div class="row py-1">
+						{% if manufacturer %}
+						<div class="col-12 col-sm-6 col-lg-auto mb-1 mb-md-0" itemprop="brand" itemscope itemtype="http://schema.org/Brand">
+							<div class="mr-3">{{ text_manufacturer }} <a href="{{ manufacturers }}"><span itemprop="name">{{ manufacturer }}</span></a></div>
+						</div>
+						{% endif %}
+						<div class="col-12 col-sm-6 col-lg-auto mb-1 mb-md-0">
+							<div class="mr-3">{{ text_model }} {{ model }}</div>
+						</div>
+						{% if reward %}
+						<div class="col-12 col-sm-6 col-lg-auto mb-1 mb-sm-0">
+							<div class="mr-3">{{ text_reward }} {{ reward }}</div>
+						</div>
+						{% endif %}
+
+						{% if review_status %}
+						<div class="col-12 col-sm-6 col-lg-auto ml-lg-auto">
+							<hr class="d-sm-none my-2">
+							<div class="row no-gutters">
+								<div class="col-auto">
+                {% if rating %}
+                <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+        					<meta itemprop='reviewCount' content='{{ microdata_reviews_count }}' />
+        					<meta itemprop='worstRating' content='1' />
+        					<meta itemprop='bestRating' content='5' />
+        					<meta itemprop='ratingValue' content='{{ rating }}' />
+        				</span>
+                {% endif %}
+								{% for i in 1..5 %}
+								{% if rating < i %}
+								<span class="si d-block float-left">
+									<svg fill="#ddd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+										<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+									</svg>
+								</span>
+								{% else %}
+								<span class="si d-block float-left">
+									<svg fill="#ffc107" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+										 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+									</svg>
+								</span>
+								{% endif %}
+								{% endfor %}
+								</div>
+								<div class="col-auto">
+									<div class="ml-3">
+										<a onclick="$('a[href=\'#tab-review\']').trigger('click');  $('html, body').animate({ scrollTop: $('a[href=\'#tab-review\']').offset().top - 5}, 250); return false;">
+                      {{ reviews }}
+                    </a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-lg-5 col-md-7 order-lg-1">
+						<div class="mb-4">
+						{% if thumb or images %}
+							<div class="product-gallery swiper-container">
+								<div class="swiper-wrapper">
+									{% if thumb %}
+									<div class="swiper-slide px-3">
+                    <meta itemprop="image" content="{{ thumb }}">
+										<a href="{{ popup }}" title="{{ heading_title }}" target="_blank" onclick="psw_show(0);return false">
+											<img src="{{ thumb_holder }}" data-src="{{ thumb }}" data-srcset="{{ thumb }} 1x, {{ thumb2x }} 2x, {{ thumb3x }} 3x, {{ thumb4x }} 4x" title="{{ heading_title }}" alt="{{ heading_title }}-0" class="img-fluid d-block mx-auto swiper-lazy" />
+										</a>
+										<div class="thumb-preloader">
+											<div class="d-table w-100 h-100">
+												<div class="d-table-cell w-100 h-100 align-middle text-center">
+													<svg class="spinner" width="33" height="33" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+														<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+													</svg>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% if images %}
+									{% set i = 1 %}
+									{% for image in images %}
+									<div class="swiper-slide px-3">
+										<a href="{{ image.popup }}" title="{{ heading_title }}" target="_blank" onclick="psw_show({{ i }});return false">
+											<img src="{{ thumb_holder }}" data-src="{{ image.thumb }}" data-srcset="{{ image.thumb }} 1x, {{ image.thumb2x }} 2x, {{ image.thumb3x }} 3x, {{ image.thumb4x }} 4x" title="{{ heading_title }}" alt="{{ heading_title }}-{{ i }}" class="img-fluid d-block mx-auto swiper-lazy" />
+										</a>
+										<div class="thumb-preloader">
+											<div class="d-table w-100 h-100">
+												<div class="d-table-cell w-100 h-100 align-middle text-center">
+													<svg class="spinner" width="33" height="33" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+														<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+													</svg>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% set i = i + 1 %}
+									{% endfor %}
+									{% endif %}
+								</div>
+								<div class="product-gallery-pagination"></div>
+								<div class="gallery-locker">
+									<div class="d-table w-100 h-100">
+										<div class="d-table-cell w-100 h-100 align-middle text-center">
+											<svg class="spinner" width="33" height="33" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+												<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if stickers %}
+						<div class="stickers pp position-absolute">
+							{% for sticker in stickers %}
+							<div class="text-right"><span class="{{ sticker.class }}">{{ sticker.text }}</span></div>
+							{% endfor %}
+						</div>
+						{% endif %}
+						</div>
+					</div>
+
+					<div class="col-12 col-xl-3 col-lg-4 col-md-5 order-lg-3">
+						<div class="card mb-3">
+							<div class="card-body p-3">
+								<div class="row form-row flex-nowrap">
+									<div class="col" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+
+                    <!-- <meta itemprop="url" content="{{ microdata_canonical_url }}"> -->
+                    <!-- <link itemprop="url" href="{{ microdata_canonical_url }}"> -->
+
+                    <meta itemprop="priceCurrency" content="{{ microdata_currency }}">
+                    {% if microdata_price_valid_until %}
+                    <meta itemprop="priceValidUntil" content="{{ microdata_price_valid_until }}">
+                    {% endif %}
+                    {% if quantity > 0 %}
+                    <link itemprop="availability" href="http://schema.org/InStock">
+                    {% else %}
+                    <link itemprop="availability" href="https://schema.org/OutOfStock">
+                    {% endif %}
+										<div class="d-table w-100 h-100">
+											<div class="d-table-cell w-100 h-100 align-middle">
+												{% if not special %}
+                        <meta itemprop="price" content="{{ microdata_price }}">
+												<div class="h2 m-0 text-nowrap">{{ price }}</div>
+												{% else %}
+                        <meta itemprop="price" content="{{ microdata_special }}">
+												<s class="text-danger">{{ price }}</s>
+												<div class="h2 m-0 text-nowrap">{{ special }}</div>
+												{% endif %}
+												{% if tax %}
+												<div class="text-muted font-weight-light mt-1">{{ text_tax }} {{ tax }}</div>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+									<div class="col-auto ml-auto">
+										<div class="btn-group btn-group-sm ml-1 ml-sm-2">
+											<button type="button" data-toggle="tooltip" class="btn btn-light" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');">
+												<svg fill="#aaa" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" >
+													<path d="M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v13l-5-6v9h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+												</svg>
+											</button>
+											<button type="button" data-toggle="tooltip" class="btn btn-light" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');">
+												<svg fill="#aaa" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+												</svg>
+											</button>
+										</div>
+									</div>
+								</div>
+								{% if discounts %}
+
+								{% for discount in discounts %}
+								<div class="mt-1">
+									{{ discount.quantity }}
+									<span class="text-muted font-weight-light">{{ text_discount }}</span>
+									<strong>{{ discount.price }}</strong>
+								</div>
+								{% endfor %}
+								{% endif %}
+								{% if points %}
+
+								<div class="mt-1"><span class="text-muted font-weight-light">{{ text_points }}</span> <b>{{ points }}</b></div>
+								{% endif %}
+								<div class="alert {% if quantity > 0 %} alert-success {% else %} alert-danger {% endif %} py-2 px-3 mt-3">
+									{{ stock }}
+								</div>
+								<div id="product">
+									{% if options %}
+									<div class="h6 d-none">{{ text_option }}</div>
+									{% set i = 0 %}
+									{% for option in options %}
+									{% set i = i + 1 %}
+									{% if option.type == 'select' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<select name="option[{{ option.product_option_id }}]" id="input-option{{ option.product_option_id }}" class="custom-select form-control">
+												<option value="">{{ text_select }}</option>
+												{% for option_value in option.product_option_value %}
+												<option value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
+												{% if option_value.price %}
+												({{ option_value.price_prefix }}{{ option_value.price }})
+												{% endif %} </option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'radio' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label"><strong>{{ option.name }}</strong></label>
+											<div id="input-option{{ option.product_option_id }}">
+												<div class="btn-group-toggle" data-toggle="buttons">
+												{% for option_value in option.product_option_value %}
+												{% if option_value.image %}
+													<label class="btn btn-light btn-sm mb-2 mr-2 p-1">
+														<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" />
+														<img src="{{ option_value.image }}" srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-fluid d-block rounded" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+													</label>
+												{% else %}
+													<label class="btn btn-light btn-sm mb-2 mr-2">
+														<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" />
+														<span data-toggle="tooltip" data-offset="0, 10" title="{% if option_value.price %} {{ option_value.price_prefix }}{{ option_value.price }}{% endif %}">{{ option_value.name }}</span>
+													</label>
+												{% endif %}
+												{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'checkbox' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label"><strong>{{ option.name }}</strong></label>
+											<div id="input-option{{ option.product_option_id }}">
+												<div class="btn-group-toggle" data-toggle="buttons">
+												{% for option_value in option.product_option_value %}
+												{% if option_value.image %}
+													<label class="btn btn-light btn-sm mb-2 mr-2 p-1">
+														<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" />
+														<img src="{{ option_value.image }}" srcset="{{ option_value.image }} 1x, {{ option_value.image2x }} 2x, {{ option_value.image3x }} 3x, {{ option_value.image4x }} 4x" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-fluid d-block rounded" data-toggle="tooltip" data-offset="0, 8" title="{{ option_value.name }}{% if option_value.price %} ({{ option_value.price_prefix }}{{ option_value.price }}){% endif %}" />
+													</label>
+												{% else %}
+													<label class="btn btn-light btn-sm mb-2 mr-2">
+														<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" />
+														<span data-toggle="tooltip" data-offset="0, 10" title="{% if option_value.price %} {{ option_value.price_prefix }}{{ option_value.price }}{% endif %}">{{ option_value.name }}</span>
+													</label>
+												{% endif %}
+												{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'text' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" {% if option.required %} required {% endif %} />
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'textarea' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<textarea name="option[{{ option.product_option_id }}]" rows="2" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'file' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label"><strong>{{ option.name }}</strong></label>
+											<br>
+											<button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-light mw-100 text-truncate">
+												<span class="si si-18 loading-icon mr-2">
+													<svg class="spinner" width="18px" height="18px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+														 <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+													</svg>
+												</span>
+												<span class="si si-18 static-icon mr-2">
+													<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+														<path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+													</svg>
+												</span>
+												<span class="button-text">{{ button_upload }}</span>
+											</button>
+											<input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'date' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<div class="input-group date need-dtp">
+												<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-option{{ option.product_option_id }}" class="form-control" />
+												<div class="input-group-append">
+													<button class="btn btn-light border-like-form px-1" type="button">
+														<span class="si si-18 px-1">
+															<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+															</svg>
+														</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'datetime' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<div class="input-group datetime need-dtp">
+												<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+												<div class="input-group-append">
+													<button class="btn btn-light border-like-form px-1" type="button">
+														<span class="si si-18 px-1">
+															<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+															</svg>
+														</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% if option.type == 'time' %}
+									<div class="mb-3">
+										<div class="form-group{% if option.required %} required {% endif %} m-0">
+											<label class="control-label" for="input-option{{ option.product_option_id }}"><strong>{{ option.name }}</strong></label>
+											<div class="input-group time need-dtp">
+												<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+												<div class="input-group-append">
+													<button class="btn btn-light border-like-form px-1" type="button">
+														<span class="si si-18 px-1">
+															<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+															</svg>
+														</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% if recurrings %}
+									<div class="mb-3">
+										<div class="form-group required m-0">
+											<label><strong>{{ text_payment_recurring }}</strong></label>
+											<select name="recurring_id" class="form-control custom-select">
+												<option value="">{{ text_select }}</option>
+												{% for recurring in recurrings %}
+												<option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+												{% endfor %}
+											</select>
+											<div class="help-block" id="recurring-description"></div>
+										</div>
+									</div>
+									{% endif %}
+									<div class="row form-row mt-4">
+										<div class="col">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<button class="btn btn-light border px-0" type="button" onclick="ft_countupd('-1', '{{ minimum }}', '#input-quantity')">
+														<span class="si si-18 d-block">
+															<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M19 13H5v-2h14v2z"/>
+															</svg>
+														</span>
+													</button>
+												</div>
+												<input type="text" name="quantity" value="{{ minimum }}" id="input-quantity" class="form-control border text-center" />
+												<div class="input-group-append">
+													<button class="btn btn-light border px-0" type="button" onclick="ft_countupd('1', '{{ minimum }}', '#input-quantity')">
+														<span class="si si-18 d-block">
+															<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+															</svg>
+														</span>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-7">
+                      <div class="row no-gutters">
+                        <div class="col">
+                          <input type="hidden" name="product_id" value="{{ product_id }}" />
+    											<button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-danger btn-block " {% if quantity <=0 and disable_btn_status %}disabled{% endif %}><b>{% if quantity <= 0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</b></button>
+                        </div>
+                        {% if fastorder_status %}
+                        <div class="col-auto">
+                          <button type="button" class="btn btn-danger px-2 ml-2" title="{{ g_text_fastorder }}" onclick="ft_fastorder('{{ product_id }}')" {% if quantity <=0 and disable_btn_status %}disabled{% endif %}>
+    												<span class="si si-rem">
+    													<svg fill="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    														<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"></path>
+    													</svg>
+    												</span>
+    											</button>
+                        </div>
+                        {% endif %}
+                      </div>
+										</div>
+									</div>
+									{% if minimum > 1 %}
+									<small class="d-block text-muted mt-2 font-weight-light">{{ text_minimum }}</small>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+						{{ column_right }}
+					</div>
+
+					<div class="col order-lg-2">
+						{% if show_short_description %}
+						<div class="mb-4 d-none d-lg-block">
+						<p>{{ short_description }} <a href="#" onclick="$('a[href=\'#tab-description\']').trigger('click'); $('html, body').animate({ scrollTop: $('a[href=\'#tab-description\']').offset().top - 2}, 250); return false;">→</a></p>
+						</div>
+						{% endif %}
+						{% if attribute_groups and show_short_attributes %}
+            {% set i = 0 %}
+						<div class="mb-4 d-none d-lg-block">
+						{% for attribute_group in attribute_groups if i < short_attributes_limit %}
+						<div class="h6 ">{{ attribute_group.name }}</div>
+						{% for attribute in attribute_group.attribute if i < short_attributes_limit %}
+						<div class="row form-row mb-3">
+							<div class="col-auto mw-100">{{ attribute.name }}</div>
+							<div class="col">
+							<div style="border-bottom:1px dotted #dedede;height: 85%"></div>
+							</div>
+							<div class="col-4">{{ attribute.text }}</div>
+						</div>
+            {% set i = i + 1 %}
+						{% endfor %}
+						{% endfor %}
+							<button type="button" class="btn btn-light btn-sm-ft" onclick="$('a[href=\'#tab-specification\']').trigger('click'); $('html, body').animate({ scrollTop: $('a[href=\'#tab-specification\']').offset().top - 2}, 250); return false;">{{ g_text_more_attr }}</button>
+						</div>
+						{% endif %}
+						{% if show_social_likes %}
+						<div class="mb-4 text-center text-md-left">
+							<hr class="d-md-none">
+							<script src="//yastatic.net/share2/share.js" async="async"></script>
+							<div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,gplus,twitter,viber,whatsapp,telegram" data-size="s"></div>
+							<hr class="d-md-none">
+						</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="row">
+					{% if column_left %}
+					<div class="col-lg-3 col-xl-mw260">
+						{{ column_left }}
+					</div>
+					{% endif %}
+					<div class="col">
+
+						<div class="">
+
+							<ul class="nav nav-tabs mb-4">
+								<li class="nav-item">
+									<a class="nav-link active pl-sm-2" href="#tab-description" data-toggle="tab">
+										<span class="si si-rem">
+											<svg fill="#ccc" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+											</svg>
+										</span>
+									<span class="d-none d-sm-inline ml-1">{{ tab_description }}</span>
+									</a>
+								</li>
+
+								{% if attribute_groups %}
+								<li class="nav-item">
+									<a class="nav-link pl-sm-2" href="#tab-specification" data-toggle="tab">
+										<span class="si si-rem">
+											<svg fill="#ccc" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+											</svg>
+										</span>
+										<span class="d-none d-sm-inline ml-1">{{ tab_attribute }}</span>
+									</a>
+								</li>
+								{% endif %}
+
+								{% if review_status %}
+								<li class="nav-item">
+									<a class="nav-link pl-sm-2" href="#tab-review" data-toggle="tab">
+										<span class="si si-rem">
+											<svg fill="#ccc" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+											</svg>
+										</span>
+										<span class="d-none d-sm-inline ml-1">{{ tab_review }}</span>
+									</a>
+								</li>
+								{% endif %}
+							</ul>
+							<div class="tab-content">
+								<div class="tab-pane active" id="tab-description" itemprop="description">{{ description }}</div>
+								{% if attribute_groups %}
+								<div class="tab-pane" id="tab-specification">
+									<table class="table">
+										{% for attribute_group in attribute_groups %}
+										<thead>
+											<tr>
+												<td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+											</tr>
+										</thead>
+										<tbody>
+										{% for attribute in attribute_group.attribute %}
+										<tr>
+											<td>{{ attribute.name }}</td>
+											<td>{{ attribute.text }}</td>
+										</tr>
+										{% endfor %}
+											</tbody>
+										{% endfor %}
+									</table>
+								</div>
+								{% endif %}
+								{% if review_status %}
+								<div class="tab-pane" id="tab-review">
+									<button type="button" class="btn btn-lg btn-block border btn-light mb-3 text-muted" data-toggle="collapse" data-target="#collapse-review">
+										{{ text_write }}
+									</button>
+
+									<div class="collapse" id="collapse-review">
+										<div class="card mb-3">
+											<div class="card-header">
+												<h6 class="card-title m-0">
+													<span class="si si-rem mr-1">
+														<svg fill="#aaa" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+															<path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+														</svg>
+													</span>
+													{{ text_write }}
+												</h6>
+											</div>
+											<div class="card-body bg-light">
+												<form class="form-horizontal" id="form-review">
+													{% if review_guest %}
+													<div class="form-group required">
+														<input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" placeholder="{{ entry_name }} *" />
+													</div>
+													<div class="form-group required">
+														<textarea name="text" rows="4" id="input-review" class="form-control" placeholder="{{ entry_review }} *"></textarea>
+														<div class="help-block d-none">{{ text_note }}</div>
+													</div>
+													<div class="form-group required">
+														<label class="d-inline-block align-middle mb-0 mr-1 control-label">{{ entry_rating }}</label>
+														<div class="prod-rat d-inline-block clearfix align-middle">
+															<input id="rat1" type="radio" name="rating" value="1" />
+															<label class="rat-star d-block float-left m-0" for="rat1">
+																<svg fill="#ddd" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+															</label>
+															<input id="rat2" type="radio" name="rating" value="2" />
+															<label class="rat-star d-block float-left m-0" for="rat2">
+																<svg fill="#ddd" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+															</label>
+															<input id="rat3" type="radio" name="rating" value="3" />
+															<label class="rat-star d-block float-left m-0" for="rat3">
+																<svg fill="#ddd" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+															</label>
+															<input id="rat4" type="radio" name="rating" value="4" />
+															<label class="rat-star d-block float-left m-0" for="rat4">
+																<svg fill="#ddd" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+															</label>
+															<input id="rat5" type="radio" name="rating" value="5" />
+															<label class="rat-star d-block float-left m-0" for="rat5">
+																<svg fill="#ddd" class="d-block" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+															</label>
+														</div>
+													</div>
+													{{ captcha }}
+													<div class="">
+
+															<button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary pr-4">
+																<span class="si si-rem mr-1">
+																	<svg fill="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+																		<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+																	</svg>
+																</span>
+																{{ button_continue }}
+															</button>
+
+													</div>
+													{% else %}
+													{{ text_login }}
+													{% endif %}
+												</form>
+											</div>
+										</div>
+									</div>
+
+
+									<div id="review"></div>
+								</div>
+								{% endif %}</div>
+
+
+								{% if tags %}
+								<p>
+									{{ text_tags }}
+									{% for i in 0..tags|length %}
+									{% if i < (tags|length - 1) %}
+									<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
+									{% else %}
+									<a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>
+									{% endif %}
+									{% endfor %}
+								</p>
+								{% endif %}
+						</div>
+					</div>
+				</div>
+
+				{% if products and not related_product_position %}
+				<div class="related-products">
+					<div id="related-products" class="swiper-container mb-4">
+						<div class="row mb-1">
+							<div class="col">
+								<div class="h5 mb-0 ml-2">{{ text_related }}</div>
+							</div>
+							<div class="col-auto">
+								{% if products|length > 5 %}
+								<div class="swiper-pager mr-2">
+									<div class="button-prev d-inline-block">
+										<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+										</svg>
+									</div>
+									<div class="button-next d-inline-block ">
+										<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+										</svg>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="swiper-wrapper product-items">
+							{% for product in products %}
+							<div class="swiper-slide">
+								<div class="card box-products m-2">
+									<div class="card-body p-3">
+										<div class="image">
+											<a href="{{ product.href }}"><img src="{{ product.thumb }}" srcset="{{ product.thumb }} 1x, {{ product.thumb2x }} 2x, {{ product.thumb3x }} 3x, {{ product.thumb4x }} 4x" alt="{{ product.name }}" title="{{ product.name }}" class="img-fluid d-block mx-auto" /></a>
+											{% if product.stickers %}
+											<div class="stickers position-absolute">
+												{% for sticker in product.stickers %}
+												<div><span class="{{ sticker.class }}">{{ sticker.text }}</span></div>
+												{% endfor %}
+											</div>
+											{% endif %}
+										</div>
+									</div>
+									<div class="card-footer px-2 px-md-3 pb-2 pb-md-3 pt-0 bg-white border-0">
+										<div class="h6 card-title"><a href="{{ product.href }}">{{ product.name }}</a></div>
+										{% if product.price %}
+										<div class="price">
+											{% if not product.special %}
+											<div class="h6 mb-1">{{ product.price }}</div>
+											{% else %}
+											<div class="h6 mb-1">
+												<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+												<span class="d-inline-block">{{ product.special }}</span>
+											</div>
+											{% endif %}
+											{% if product.tax %}
+											<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+											{% endif %}
+										</div>
+										{% endif %}
+                    {% if related_product_buttons %}
+                    <div class="btn-group btn-group-cart-add mt-2">
+      								<button type="button" class="btn btn-light btn-cart-add px-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <= 0 and disable_btn_status %}disabled{% endif %}>
+                        {% if product.quantity <= 0 and disable_btn_status %}
+                        <span class="px-2">{{ disable_btn_text }}</span>
+                        {% else %}
+                        <span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+      										</svg>
+      									</span>
+      									<span class="ml-1 mr-2 d-none d-md-inline text-muted">{{ button_cart }}</span>
+                        {% endif %}
+      								</button>
+      								{% if fastorder_status %}
+      								<button type="button" class="btn btn-light btn-cart-add px-1"  title="{{ g_text_fastorder }}" onclick="ft_fastorder('{{ product.product_id }}')">
+      									<span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+      										</svg>
+      									</span>
+      								</button>
+      								{% endif %}
+      								{% if qview_status %}
+      								<button type="button" class="btn btn-light btn-cart-add px-1" title="{{ g_text_qview }}" onclick="ft_qview('{{ product.product_id }}')">
+      									<span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"></path><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"></path>
+      										</svg>
+      									</span>
+      								</button>
+      								{% endif %}
+      								<div class="btn-group position-static">
+      									<div class="dropdown-menu" >
+      										<a href="#" class="dropdown-item pl-2 pr-3" onclick="wishlist.add('{{ product.product_id }}');return false">
+      											<span class="si si-rem mr-1">
+      												<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+      												</svg>
+      											</span>
+      											{{ button_wishlist }}
+      										</a>
+      										<a href="#" class="dropdown-item pl-2 pr-3" onclick="compare.add('{{ product.product_id }}');return false">
+      											<span class="si si-rem mr-1">
+      												<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      													<path d="M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v13l-5-6v9h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      												</svg>
+      											</span>
+      											{{ button_compare }}
+      										</a>
+      									</div>
+      									<button type="button" class="btn btn-light btn-cart-add px-0" data-toggle="dropdown" data-flip="false">
+      										<span class="si si-rem">
+      											<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      												<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      											</svg>
+      										</span>
+      									</button>
+      								</div>
+      							</div>
+                    {% endif %}
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<hr class="d-md-none">
+				{% endif %}
+				
+
+				{% if products and related_product_position %}
+				<hr class="d-md-none">
+				<div class="related-products">
+					<div id="related-products" class="swiper-container mb-4">
+						<div class="row mb-1">
+							<div class="col">
+								<div class="h5 mb-0 ml-2">{{ text_related }}</div>
+							</div>
+							<div class="col-auto">
+								<div class="swiper-pager mr-2">
+									<div class="button-prev d-inline-block">
+										<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+										</svg>
+									</div>
+									<div class="button-next d-inline-block ">
+										<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+										</svg>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-wrapper product-items">
+							{% for product in products %}
+							<div class="swiper-slide">
+								<div class="card box-products m-2">
+									<div class="card-body p-3">
+										<div class="image">
+											<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-fluid d-block mx-auto" /></a>
+										</div>
+									</div>
+									<div class="card-footer px-2 px-md-3 pb-2 pb-md-3 pt-0 bg-white border-0">
+										<div class="h6 card-title"><a href="{{ product.href }}">{{ product.name }}</a></div>
+										{% if product.price %}
+										<div class="price">
+											{% if not product.special %}
+											<div class="h6 mb-1">{{ product.price }}</div>
+											{% else %}
+											<div class="h6 mb-1">
+												<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+												<span class="d-inline-block">{{ product.special }}</span>
+											</div>
+											{% endif %}
+											{% if product.tax %}
+											<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+											{% endif %}
+										</div>
+										{% endif %}
+                    {% if related_product_buttons %}
+                    <div class="btn-group btn-group-cart-add mt-2">
+      								<button type="button" class="btn btn-light btn-cart-add px-1" onclick="cart.add('{{ product.product_id }}');" {% if product.quantity <= 0 and disable_btn_status %}disabled{% endif %}>
+                        {% if product.quantity <= 0 and disable_btn_status %}
+                        <span class="px-2">{{ disable_btn_text }}</span>
+                        {% else %}
+                        <span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+      										</svg>
+      									</span>
+      									<span class="ml-1 mr-2 d-none d-md-inline text-muted">{{ button_cart }}</span>
+                        {% endif %}
+      								</button>
+      								{% if fastorder_status %}
+      								<button type="button" class="btn btn-light btn-cart-add px-1"  title="{{ g_text_fastorder }}" onclick="ft_fastorder('{{ product.product_id }}')">
+      									<span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+      										</svg>
+      									</span>
+      								</button>
+      								{% endif %}
+      								{% if qview_status %}
+      								<button type="button" class="btn btn-light btn-cart-add px-1" title="{{ g_text_qview }}" onclick="ft_qview('{{ product.product_id }}')">
+      									<span class="si si-rem">
+      										<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      											<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"></path><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"></path>
+      										</svg>
+      									</span>
+      								</button>
+      								{% endif %}
+      								<div class="btn-group position-static">
+      									<div class="dropdown-menu" >
+      										<a href="#" class="dropdown-item pl-2 pr-3" onclick="wishlist.add('{{ product.product_id }}');return false">
+      											<span class="si si-rem mr-1">
+      												<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      													<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+      												</svg>
+      											</span>
+      											{{ button_wishlist }}
+      										</a>
+      										<a href="#" class="dropdown-item pl-2 pr-3" onclick="compare.add('{{ product.product_id }}');return false">
+      											<span class="si si-rem mr-1">
+      												<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      													<path d="M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v13l-5-6v9h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+      												</svg>
+      											</span>
+      											{{ button_compare }}
+      										</a>
+      									</div>
+      									<button type="button" class="btn btn-light btn-cart-add px-0" data-toggle="dropdown" data-flip="false">
+      										<span class="si si-rem">
+      											<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      												<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+      											</svg>
+      										</span>
+      									</button>
+      								</div>
+      							</div>
+                    {% endif %}
+										</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				{% endif %}
+      {{ content_bottom }}
+			</div>
+   </div>
+</div>
+
+
+<script>
+	$('.rat-star').hover(function () {
+		$(this).prevAll('.rat-star').addClass('active');
+		$(this).addClass('active');
+	},function () {
+		$(this).prevAll('.rat-star').removeClass('active');
+		$(this).removeClass('active');
+	});
+
+	$('.rat-star').click(function(){
+		$('.rat-star').each(function(){
+			$(this).removeClass('checked');
+			$(this).prevAll('.rat-star').removeClass('checked');
+		});
+
+		$(this).addClass('checked');
+		$(this).prevAll('.rat-star').addClass('checked');
+	});
+
+
+	function startSwp(selector) {
+
+		$(selector).swiper({
+				pagination: selector + ' .product-gallery-pagination',
+				paginationBulletRender: function (swiper, index, className) {
+					var imgs1x = [], imgs2x = [], imgs3x = [],imgs4x = [], bullet = '';
+
+					{% for bullet in bullets %}
+					imgs1x.push("{{ bullet.img1x }}");
+					imgs2x.push("{{ bullet.img2x }}");
+					imgs3x.push("{{ bullet.img3x }}");
+					imgs4x.push("{{ bullet.img4x }}");
+					{% endfor %}
+
+					if (index <= ({{ add_images_limit }} - 1)) {
+						bullet = '<span class="' + className + '"><img class="img-fluid" src="' + imgs1x[index]  + '" srcset="' + imgs1x[index] + ' 1x, ' + imgs2x[index] + ' 2x, ' + imgs3x[index] + ' 3x, ' + imgs4x[index] + ' 4x" /></span>';
+					} else if (index == (imgs1x.length - 1)) {
+						bullet = '<div onclick="psw_show({{ add_images_limit }});return false" class="more-imgs">Еще ' + (imgs1x.length - {{ add_images_limit }}) + '</div>';
+					}
+
+					return bullet;
+				},
+				paginationClickable: true,
+				loop: true,
+				effect: 'fade',
+				fade: {crossFade: true},
+				speed: 100,
+				preloadImages: true,
+				lazyLoading: true,
+				lazyLoadingInPrevNext: true,
+				lazyPreloaderClass: 'thumb-preloader'
+		})
+
+	};
+
+	function startRelSwp() {
+		$('#related-products').swiper({
+			slidesPerView: 5,
+			roundLengths: true,
+			breakpoints: {
+				480: {
+				slidesPerView: 2
+				},
+				768: {
+				slidesPerView: 3
+				},
+				992: {
+				slidesPerView: 4
+				},
+				1200: {
+				slidesPerView: 5
+				}
+			},
+			nextButton: '.related-products .button-next',
+			prevButton: '.related-products .button-prev',
+		});
+	}
+
+	$(function () {
+		if (typeof jQuery().swiper != 'function'  ) {
+
+			$('head').append('<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/swiper/css/swiper.min.css" />');
+
+			$.getScript("catalog/view/javascript/jquery/swiper/js/swiper.jquery.js", function( data, textStatus, jqxhr ) {
+				startSwp('.product-gallery');
+				$(window).on('load', function () {startSwp('.product-gallery');}); // mozila fix
+				startRelSwp();
+
+			});
+
+		} else {
+			startSwp('.product-gallery');
+			$(window).on('load', function () {startSwp('.product-gallery');}); // mozila fix
+			startRelSwp();
+		}
+
+	});
+
+
+
+	function psw_show(index_start) {
+
+		if ($('.pswp').length < 1) {
+			pswp_c  = '<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">'
+			pswp_c += '	<div class="pswp__bg"></div>'
+			pswp_c += '	<div class="pswp__scroll-wrap">'
+			pswp_c += '		<div class="pswp__container">'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '		</div>'
+			pswp_c += '		<div class="pswp__ui pswp__ui--hidden">'
+			pswp_c += '			<div class="pswp__top-bar">'
+			pswp_c += '				<div class="pswp__counter"></div>'
+			pswp_c += '				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--fs" title="Fullscreen"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>'
+			pswp_c += '				<div class="pswp__preloader">'
+			pswp_c += '					<div class="pswp__preloader__icn">'
+			pswp_c += '						<div class="pswp__preloader__cut">'
+			pswp_c += '							<div class="pswp__preloader__donut"></div>'
+			pswp_c += '						</div>'
+			pswp_c += '					</div>'
+			pswp_c += '				</div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">'
+			pswp_c += '				<div class="pswp__share-tooltip"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>'
+			pswp_c += '			<div class="pswp__caption">'
+			pswp_c += '				<div class="pswp__caption__center"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '		</div>'
+			pswp_c += '	</div>'
+			pswp_c += '</div>';
+			$('body').append(pswp_c);
+		}
+
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+
+		var items = [
+
+				{% if thumb or images %}
+				{% if thumb %}
+				{
+					src: '{{ popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endif %}
+				{% if images %}
+				{% for image in images %}
+				{
+					src: '{{ image.popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endfor %}
+				{% endif %}
+				{% endif %}
+
+		];
+
+		var options = {
+			index: index_start
+		};
+
+		function psw_construct() {
+
+			var psw_gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+
+			psw_gallery.init();
+
+			$('body').addClass('psw-open');
+
+			psw_gallery.listen('destroy', function() {
+				setTimeout(function () {
+					$('body').removeClass('psw-open');
+				}, 100);
+			});
+
+		}
+
+		if (typeof PhotoSwipe != 'function'  ) {
+
+			$('.gallery-locker').css({'display':'block'});
+
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.css">');
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/default-skin/default-skin.css">');
+
+
+			$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.min.js", function( data, textStatus, jqxhr ) {
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe-ui-default.min.js", function( data, textStatus, jqxhr ) {
+					psw_construct();
+					$('.gallery-locker').css({'display':'none'});
+				});
+			});
+
+		} else {
+			psw_construct();
+		}
+
+	}
+
+	$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+		$.ajax({
+			url: 'index.php?route=product/product/getRecurringDescription',
+			type: 'post',
+			data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+			dataType: 'json',
+			beforeSend: function() {
+				$('#recurring-description').html('');
+			},
+			success: function(json) {
+				$('select[name=\'recurring_id\']').parent().find('.text-danger').remove();
+
+				if (json['success']) {
+					$('#recurring-description').html('<small class="d-block mt-2 ">'+json['success']+'</small>');
+				}
+			}
+		});
+	});
+
+	$('#button-cart').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=extension/module/frametheme/ft_cart/add',
+			type: 'post',
+			data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+			dataType: 'json',
+			beforeSend: function() {
+				loading_text = $('#button-cart').attr('data-loading');
+				$('#button-cart').addClass('loading');
+				$('#button-cart .loading-wrapper').html(loading_text);
+				$('#button-cart').attr('disabled', 'disabled');
+				$('.alert-dismissible, #product .text-danger').remove();
+				$('#product').removeClass('has-error');
+				$('#product > div').removeClass('option-error');
+				$('#product .form-control, #product .btn').removeClass('border-danger');
+			},
+			complete: function() {
+				$('#button-cart').removeClass('loading');
+				$('#button-cart .loading-wrapper').html('{{ button_cart }}');
+				$('#button-cart').removeAttr('disabled');
+			},
+			success: function(json) {
+
+				if (json['error']) {
+					if (json['error']['option']) {
+						for (i in json['error']['option']) {
+							var element = $('#input-option' + i.replace('_', '-'));
+
+							if (element.parent().hasClass('input-group')) {
+								element.addClass('border-danger');
+								element.parent().find('button').addClass('border-danger');
+								element.parent().after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().parent().addClass('option-error');
+							} else {
+								element.addClass('border-danger');
+								element.after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().addClass('option-error');
+							}
+						}
+					}
+
+					if (json['error']['recurring']) {
+						$('select[name=\'recurring_id\']').addClass('border-danger');
+						$('select[name=\'recurring_id\']').after('<div class="text-danger"><small>' + json['error']['recurring'] + '</small></div>');
+						$('select[name=\'recurring_id\']').parent().parent().addClass('option-error');
+					}
+
+				}
+
+				if (json['success']) {
+
+					$('#ft-popup-cart').modal('show');
+
+					setTimeout(function () {
+						$.ajax({
+							url: 'index.php?route=extension/module/frametheme/ft_cart/info',
+							type: 'post',
+							dataType: 'html',
+							beforeSend: function() {
+								loading_text = $('#cart > button').attr('data-loading');
+								$('#cart').addClass('loading');
+								$('#cart > button').attr('disabled', 'disabled');
+								$('#cart > button #cart-total').html('<span class="loading-wrapper">' + loading_text + '</span>');
+							},
+							complete: function() {
+								$('#cart').removeClass('loading');
+								$('#cart > button').removeAttr('disabled');
+							},
+							success: function(data){
+								var data_alert 	= '<div class="alert alert-light">';
+										data_alert += 	'<div class="row no-gutters">';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<i class="fa fa-fw fa-check mr-2"></i>';
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col">';
+										data_alert += 			json['success'];
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<button type="button" class="close" data-dismiss="alert">&times;</button>';
+										data_alert += 		'</div>';
+										data_alert += 	'</div>';
+										data_alert += '</div>';
+
+								$('#cart .cart-list').before(data_alert);
+								$('#cart > button #cart-total').html(json['total']);
+								$('#cart .cart-list').html($(data).find('.cart-list').html());
+							},
+							error: function(xhr, ajaxOptions, thrownError) {
+								alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+							}
+						});
+					}, 100);
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+
+	$('button[id^=\'button-upload\']').on('click', function() {
+		var node = this;
+
+		$('#form-upload').remove();
+		$('body').prepend('<form enctype="multipart/form-data" id="form-upload" class="d-none"><input type="file" name="file" /></form>');
+		$('#form-upload input[name=\'file\']').trigger('click');
+
+		if (typeof timer != 'undefined') {
+				clearInterval(timer);
+		}
+		timer = setInterval(function() {
+			if ($('#form-upload input[name=\'file\']').val() != '') {
+
+				var f_path = $('#form-upload input[name=\'file\']').val().split('\\'),
+						f_name = f_path[f_path.length - 1];
+
+				$(node).find('.button-text').html(f_name);
+
+				$(node).find('.static-icon').html('<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/></svg>');
+
+				clearInterval(timer);
+
+				$.ajax({
+					url: 'index.php?route=tool/upload',
+					type: 'post',
+					dataType: 'json',
+					data: new FormData($('#form-upload')[0]),
+					cache: false,
+					contentType: false,
+					processData: false,
+					beforeSend: function() {
+						$(node).addClass('loading');
+					},
+					complete: function() {
+						$(node).removeClass('loading');
+					},
+					success: function(json) {
+						$('.text-danger').remove();
+						if (json['error']) {
+							$(node).parent().find('input').after('<div class="text-danger"><small>' + json['error'] + '</small></div>');
+							$(node).find('.button-text').html('{{ button_upload }}');
+							$(node).find('.static-icon').html('<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>');
+						}
+						if (json['success']) {
+							console.log(json['success']);
+							$(node).parent().find('input').val(json['code']);
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+		}, 500);
+	});
+
+	function start_datetimepicker() {
+		$('.date').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickTime: false
+		});
+
+		$('.datetime').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: true,
+			pickTime: true
+		});
+
+		$('.time').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: false
+		});
+	}
+
+	$(function () {
+		if ($('.need-dtp').length > 0){
+			if (typeof jQuery().datetimepicker != 'function'  ) {
+
+				$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.css">');
+
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment.min.js", function( data, textStatus, jqxhr ) {
+					$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment-with-locales.min.js", function( data, textStatus, jqxhr ) {
+						$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.js", function( data, textStatus, jqxhr ) {
+							start_datetimepicker();
+						});
+					});
+				});
+
+			} else {
+				start_datetimepicker();
+			}
+		}
+	});
+
+	$('#review').delegate('.pagination a', 'click', function(e) {
+			e.preventDefault();
+
+			$('#review').load(this.href);
+
+	});
+
+	$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+	$('#button-review').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+			type: 'post',
+			dataType: 'json',
+			data: $("#form-review").serialize(),
+			beforeSend: function() {
+				$('#button-review').button('loading');
+			},
+			complete: function() {
+				$('#button-review').button('reset');
+			},
+			success: function(json) {
+				$('.alert-dismissible').remove();
+
+				if (json['error']) {
+					$('#collapse-review').after('<div class="alert alert-danger alert-dismissible"> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+
+				if (json['success']) {
+					$('#collapse-review').after('<div class="alert alert-success alert-dismissible"> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+					$('input[name=\'name\']').val('');
+					$('textarea[name=\'text\']').val('');
+					$('input[name=\'rating\']:checked').prop('checked', false);
+				}
+			}
+		});
+	});
+
+
+</script>
+{{ footer }}

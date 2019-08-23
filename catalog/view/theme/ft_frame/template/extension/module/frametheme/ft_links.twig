@@ -1,0 +1,13 @@
+{% if links_status and links %}
+<div class="header-menu text-center text-lg-right h-100">
+	<div class="d-table w-100 h-100">
+		<div class="d-table-cell w-100 h-100 align-middle">
+			<ul class="list-inline d-inline-block m-0">		
+				{% for link in links %}
+				<li class="list-inline-item mx-3 mx-sm-3 pt-2 pb-2"><a href="{{ link.href }}">{{ link.title }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endif %}

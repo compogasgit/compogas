@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{ text_order_id }} {{ order_id }}</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
+<p> {{ text_received }} </p>
+<p><a href="{{ store_url }}" title="{{ store_name }}">{{ store_name }}</a></p>
+<table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
+<thead>
+	<tr>
+		<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;" colspan="2">
+			Детали заказа
+		</td>
+	</tr>
+</thead>
+<tbody>
+	<tr>
+		<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+			<a href="{{ link }}"><b>{{ text_order_id }}</b> {{ order_id }}</a><br />
+			<b>{{ text_date_added }}</b> {{ date_added }}<br />
+			<b>Способ оплаты: </b> {{ payment_method }}<br />
+			{% if shipping_method %} 
+				<b>Способ доставки: </b> {{ shipping_method }}
+			{% endif %}
+		</td>
+		<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+			<b>Почта: </b> {{ email }}<br />
+			<b>Номер телефона: </b> <a href="tel:{{ telephone }}">{{ telephone }}</a><br />
+			<b>IP-адрес: </b> {{ ip }}<br />
+			<b>{{ text_order_status }}</b> {{ order_status }}<br />
+		</td>
+	</tr>
+	{% if shipping_address %}
+		<tr>
+			<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>Адрес и контактное лицо</b></td>
+			<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ shipping_address }}</td>
+		</tr>
+	{% endif %}
+	{% if comment %}
+	<tr>
+		<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+			<b>{{ text_comment }}</b>
+		</td>
+		<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+			{{ comment }}
+		</td>
+	</tr>
+	{% endif %}
+</tbody>
+</table>
+
+<table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
+<thead>
+	<tr>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">Товары</td>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">Модель</td>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">Количество</td>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">Цена</td>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">Итого</td>
+	</tr>
+</thead>
+<tbody>
+
+{% for product in products %}
+<tr>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ product.name }}
+	{% for option in product.option %}<br />
+	&nbsp;<small> - {{ option.name }}: {{ option.value }}</small>{% endfor %}</td>
+	<td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ product.model }}</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ product.quantity }}</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ product.price }}</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ product.total }}</td>
+</tr>
+{% endfor %}
+{% for voucher in vouchers %}
+<tr>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ voucher.description }}</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"></td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">1</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ voucher.amount }}</td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ voucher.amount }}</td>
+</tr>
+{% endfor %}
+	</tbody>
+
+<tfoot>
+
+{% for total in totals %}
+<tr>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="4"><b>{{ total.title }}:</b></td>
+	<td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+		{% if total.title == 'ТК СДЭК (Регионы РФ)' %}
+			{{ 'уточняйте' }}
+		{% else %}
+			{{ total.text }}
+		{% endif %}	
+	</td>
+</tr>
+{% endfor %}
+	</tfoot>
+
+</table>
+
+</body>
+</html>

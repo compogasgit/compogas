@@ -1,0 +1,804 @@
+{{ header }}
+<div class="container">
+  	<div class="row">
+		{% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item">
+						<a href="{{ breadcrumb.href }}">
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+						</a>
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% else %}
+					<li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+		{{ content_top }}
+		<h1 class="h2 mb-3">{{ heading_title }}</h1>
+
+		{% set content = description|striptags %}
+		{% if content %}
+
+		<div class="articles-info">
+
+		{% if image_popup %}
+				<div class="article-image{{ float ? ' acfloat' }}"><a class="image_popup" href="{{ image_popup }}"><img src="{{ image }}" alt="{{ heading_title }}" /></a></div>
+		{% else %}
+			{% if image %}
+					<div class="article-image"><img src="{{ image }}" alt="{{ heading_title }}" /></div>
+			{% endif %}
+		{% endif %}
+
+		<div{{ not articles ? ' class="article-content"' }}>
+			{{ description }}
+		</div>
+
+		{% if not articles %}
+			<div class="article-add-info">
+				<div>
+					{% if show_date %}
+						<span class="article-date"><i class="fa fa-calendar"></i> {{ date }}</span>
+					{% endif %}
+					{% if show_views %}
+						<span class="article-viewed"><i class="fa fa-eye"></i> {{ viewed }}</span>
+					{% endif %}
+				</div>
+					{% if social %}
+						<div class="article-share">{{ social }}</div>
+					{% endif %}
+					{% if continue %}
+						<div><a href="{{ continue }}" class="btn-continue"><i class="fa fa-share-square-o"></i> {{ button_continue }}</a></div>
+					{% endif %}
+			</div>
+		{% endif %}
+
+		{% if products %}
+		<!-- products start -->
+
+		<div class="related-products mt-5">
+			<hr class="d-md-none">
+			<div id="related-products-in-article" class="swiper-container card mb-4">
+				<div class="row card-header mb-1">
+					<div class="col card-title pt-1">
+						<div class="h5 m-0">
+							<span class="si mr-2">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M0 0h24v24H0zm18.31 6l-2.76 5z" fill="none"/>
+									<path d="M11 9h2V6h3V4h-3V1h-2v3H8v2h3v3zm-4 9c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-9.83-3.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.86-7.01L19.42 4h-.01l-1.1 2-2.76 5H8.53l-.13-.27L6.16 6l-.95-2-.94-2H1v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.13 0-.25-.11-.25-.25z"/>
+								</svg>
+							</span>
+							{{ text_related }}
+						</div>
+					</div>
+					<div class="col-auto">
+						<div class="swiper-pager mr-2">
+							<div class="button-prev d-inline-block">
+								<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+								</svg>
+							</div>
+							<div class="button-next d-inline-block ">
+								<svg class="d-block" fill="#aaa" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+								</svg>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-wrapper card-body p-0">
+					{% for product in products %}
+					<div class="swiper-slide h-auto">
+						<div class="card product-carousel-item h-100 border-top-0 border-bottom-0 border-left-0 rounded-0 mx-auto">
+							<div class="image position-relative px-2 px-sm-3 pt-2 pb-2">
+								<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-fluid d-block mx-auto" /></a>
+							</div>
+							<div class="card-body px-2 px-sm-3 pt-2 pb-0">
+								<div class="caption">
+									<div class="card-title h6"><a href="{{ product.href }}" class="text-secondary">{{ product.name }}</a></div>
+								</div>
+							</div>
+							<div class="card-footer px-2 px-sm-3 pb-2 pb-sm-3 pt-0 bg-white border-0">
+								{% if product.price %}
+								<div class="price">
+									{% if not product.special %}
+									<div class="h6 mb-1">{{ product.price }}</div>
+									{% else %}
+									<div class="h6 mb-1">
+										<s class="d-inline-block text-danger font-weight-light">{{ product.price }}</s>
+										<span class="d-inline-block">{{ product.special }}</span>
+									</div>
+									{% endif %}
+									{% if product.tax %}
+									<small class="font-weight-light text-muted d-block">{{ text_tax }} {{ product.tax }}</small>
+									{% endif %}
+								</div>
+								{% endif %}
+								{% if review_status %}
+								<div class="rating mt-2">
+									<div class="d-inline-block mr-1">
+										{% for i in 1..5 %}
+										{% if product.rating < i %}
+										<span class="si si-rem si-rem-star">
+											<svg fill="#ddd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+											</svg>
+										</span>
+										{% else %}
+										<span class="si si-rem si-rem-star">
+											<svg fill="#ffc107" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+												 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+											</svg>
+										</span>
+										{% endif %}
+										{% endfor %}
+									</div>
+									<small class="d-inline-block">
+										{% if product.reviews_href %}
+										<a href="{{ product.reviews_href }}">{{ product.reviews }}</a>
+										{% else %}
+										<span class="text-muted">{{ product.reviews }}</span>
+										{% endif %}
+									</small>
+								</div>
+								{% endif %}
+								<div class="btn-group btn-group-cart-add mt-2">
+									<button type="button" class="btn btn-light btn-cart-add px-1" onclick="cart.add('{{ product.product_id }}', '{{ product.minimum }}');" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+										<span class="si si-rem">
+											<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M17.21 9l-4.38-6.56c-.19-.28-.51-.42-.83-.42-.32 0-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1h-4.79zM9 9l3-4.4L15 9H9zm3 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+											</svg>
+										</span>
+										<span class="ml-1 mr-2 d-none d-md-inline text-muted">{% if product.quantity <=0 and disable_btn_status %}{{ disable_btn_text }}{% else %}{{ button_cart }}{% endif %}</span>
+									</button>
+									{% if fastorder_status %}
+									<button type="button" class="btn btn-light btn-cart-add px-1" title="{{ g_text_fastorder }}" onclick="ft_fastorder('{{ product.product_id }}')" {% if product.quantity <=0 and disable_btn_status %}disabled{% endif %}>
+										<span class="si si-rem">
+											<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+											</svg>
+										</span>
+									</button>
+									{% endif %}
+									{% if qview_status %}
+									<button type="button" class="btn btn-light btn-cart-add px-1" title="{{ g_text_qview }}" onclick="ft_qview('{{ product.product_id }}')">
+										<span class="si si-rem">
+											<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,6.5c3.79,0,7.17,2.13,8.82,5.5c-1.65,3.37-5.02,5.5-8.82,5.5S4.83,15.37,3.18,12C4.83,8.63,8.21,6.5,12,6.5 M12,4.5 C7,4.5,2.73,7.61,1,12c1.73,4.39,6,7.5,11,7.5s9.27-3.11,11-7.5C21.27,7.61,17,4.5,12,4.5L12,4.5z"></path><path d="M12,9.5c1.38,0,2.5,1.12,2.5,2.5s-1.12,2.5-2.5,2.5S9.5,13.38,9.5,12S10.62,9.5,12,9.5 M12,7.5c-2.48,0-4.5,2.02-4.5,4.5 s2.02,4.5,4.5,4.5s4.5-2.02,4.5-4.5S14.48,7.5,12,7.5L12,7.5z"></path>
+											</svg>
+										</span>
+									</button>
+									{% endif %}
+									<div class="btn-group position-static">
+										<div class="dropdown-menu" >
+											<a href="#" class="dropdown-item pl-2 pr-3" onclick="wishlist.add('{{ product.product_id }}');return false">
+												<span class="si si-rem mr-1">
+													<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+														<path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+													</svg>
+												</span>
+												{{ button_wishlist }}
+											</a>
+											<a href="#" class="dropdown-item pl-2 pr-3" onclick="compare.add('{{ product.product_id }}');return false">
+												<span class="si si-rem mr-1">
+													<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+														<path d="M10 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h5v2h2V1h-2v2zm0 15H5l5-6v6zm9-15h-5v2h5v13l-5-6v9h5c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+													</svg>
+												</span>
+												{{ button_compare }}
+											</a>
+										</div>
+										<button type="button" class="btn btn-light btn-cart-add px-0" data-toggle="dropdown" data-flip="false">
+											<span class="si si-rem">
+												<svg fill="#bbb" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+													<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+												</svg>
+											</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<!-- products end -->
+		{% endif %}
+
+		<script>
+
+
+		</script>
+
+		{% if similar_articles %}
+		<!-- similar start -->
+			  <div class="similar-articles">
+			  <h3>{{ text_similar_articles }}</h3>
+			  <div class="row">
+			{% set i = 0 %}
+			{% for similar_article in similar_articles %}
+				{% if column_left and column_right %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+				{% elseif column_left or column_right %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-6 col-xs-12' %}
+				{% else %}
+				{% set class = 'col-lg-6 col-md-6 col-sm-6 col-xs-12' %}
+				{% endif %}
+
+				<div class="{{ class }}">
+				  <div class="similar-article-block">
+					<div class="image"><a href="{{ similar_article.href }}"><img src="{{ similar_article.thumb }}" alt="{{ similar_article.name }}" title="{{ similar_article.name }}" class="img-responsive" /></a></div>
+					<div class="caption">
+					  <h4><a href="{{ similar_article.href }}">{{ similar_article.name }}</a></h4>
+					  <p>{{ similar_article.description }}</p>
+					</div>
+				  </div>
+				</div>
+				{% endfor %}
+			  </div>
+			 </div>
+		<!-- similar end -->
+		{% endif %}
+
+		{% if not articles and vk_comments_api %}
+			<div id="vk_comments"></div>
+			<script>
+			window.onload = function () {
+			 VK.init({apiId: {{ vk_comments_api }}, onlyWidgets: true});
+			 VK.Widgets.Comments('vk_comments');
+			}
+			</script>
+		{% endif %}
+
+ 		</div>
+		{% endif %}
+
+	{% if articles %}
+		{% if column_left and column_right %}
+		{% set class = 'col-lg-6 col-md-6 col-sm-12 col-xs-12' %}
+		{% elseif column_left or column_right %}
+		{% set class = 'col-lg-4 col-md-4 col-sm-6 col-xs-12' %}
+		{% else %}
+		{% set class = 'col-lg-3 col-md-3 col-sm-6 col-xs-12' %}
+		{% endif %}
+
+		<div class="ac-line">
+			{% for article in articles %}
+			{% if article.children %}
+				<div class="art_category {{ class }}">
+				<div class="product-thumb transition">
+				<a href="{{ article.href }}">
+					{% if article.thumb_category %}
+					  <div class="article-image"><img src="{{ article.thumb_category }}" alt="{{ article.name }}" /></div>
+					  {% endif %}
+					<div class="name"><h3><i class="fa fa-bars"></i> {{ article.name }}</h3></div>
+				</a>
+				</div>
+				</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+
+		{% if list_type == 2 %}
+			<div class="ac-line">
+		{% endif %}
+
+		{% for article in articles_list %}
+			<div class="{{ list_type == 2 ? 'articles-grid' ~ class : 'articles-list' }}">
+				<div>
+					{% if article.thumb %}
+					  <div class="article-image"><a {{ article.external ? 'class="external" id="img_' ~ article.article_id ~ '"' }} href="{{ article.href }}"><img src="{{ article.thumb }}" title="{{ article.name }}" alt="{{ article.name }}" /></a></div>
+					  {% endif %}
+
+				<div class="description">
+					  <div class="name"><a {{ article.external ? 'class="external" id="link_' ~ article.article_id ~ '"' }} href="{{ article.href }}">{{ article.name }}</a></div>
+
+					{% if article.description %}
+						<div class="ac-snippet">{{ article.description }}</div>
+					{% endif %}
+
+					{% if show_date or show_views or show_readmore %}
+					<div class="add-info">
+					{% if show_date %}
+					<span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+					{% endif %}
+					{% if show_views %}
+					<span class="article-viewed"><i class="fa fa-eye"></i> {{ article.viewed }}</span>
+					{% endif %}
+					{% if article.description and show_readmore %}
+					<a {{ article.external ? 'class="art-readmore external" id="more_' ~ article.article_id : 'class="art-readmore"' }} href="{{ article.href }}"><i class="fa fa-share-square-o"></i> {{ text_readmore }}</a>
+					{% endif %}
+					</div>
+					{% endif %}
+				</div>
+
+				</div>
+			</div>
+		{% endfor %}
+
+		{% if list_type == 2 %}
+			</div>
+		{% endif %}
+
+		<br />
+			  <div class="row">
+				<div class="col-sm-6 text-left">{{ pagination }}</div>
+				<div class="col-sm-6 text-right">{{ results }}</div>
+			  </div>
+
+				{% if additional_description %}
+					<div class="art_category_additional">
+						{{ additional_description }}
+					</div>
+					{% endif %}
+
+		  {% endif %}
+
+		{{ content_bottom }}</div>
+		   </div>
+		</div>
+
+		<script><!--
+		$('.image_popup').magnificPopup({
+			type: 'image'
+		});
+		//--></script>
+		<script><!--
+			$('.external').click(function(){
+				var id = this.id.replace(/[^0-9]/g, '');
+				$.ajax({
+					url: 'index.php?route=information/article/updateViewed',
+					type: 'post',
+					data: 'article_id=' + id,
+					dataType: 'html'
+				});
+			});
+		//--></script>
+
+
+<script>
+	$('.rat-star').hover(function () {
+		$(this).prevAll('.rat-star').addClass('active');
+		$(this).addClass('active');
+	},function () {
+		$(this).prevAll('.rat-star').removeClass('active');
+		$(this).removeClass('active');
+	});
+
+	$('.rat-star').click(function(){
+		$('.rat-star').each(function(){
+			$(this).removeClass('checked');
+			$(this).prevAll('.rat-star').removeClass('checked');
+		});
+
+		$(this).addClass('checked');
+		$(this).prevAll('.rat-star').addClass('checked');
+	});
+
+
+
+	function startRelSwp() {
+		$('#related-products-in-article').swiper({
+			slidesPerView: 5,
+			roundLengths: true,
+			breakpoints: {
+				480: {
+				slidesPerView: 2
+				},
+				768: {
+				slidesPerView: 3
+				},
+				992: {
+				slidesPerView: 4
+				},
+				1200: {
+				slidesPerView: 5
+				}
+			},
+			nextButton: '.related-products .button-next',
+			prevButton: '.related-products .button-prev',
+		});
+	}
+
+	$(function () {
+		if (typeof jQuery().swiper != 'function'  ) {
+
+			$('head').append('<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/swiper/css/swiper.min.css" />');
+
+			$.getScript("catalog/view/javascript/jquery/swiper/js/swiper.jquery.js", function( data, textStatus, jqxhr ) {
+				startRelSwp();
+			});
+
+		} else {
+			startRelSwp();
+		}
+
+	});
+
+	function psw_show(index_start) {
+
+		if ($('.pswp').length < 1) {
+			pswp_c  = '<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">'
+			pswp_c += '	<div class="pswp__bg"></div>'
+			pswp_c += '	<div class="pswp__scroll-wrap">'
+			pswp_c += '		<div class="pswp__container">'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '			<div class="pswp__item"></div>'
+			pswp_c += '		</div>'
+			pswp_c += '		<div class="pswp__ui pswp__ui--hidden">'
+			pswp_c += '			<div class="pswp__top-bar">'
+			pswp_c += '				<div class="pswp__counter"></div>'
+			pswp_c += '				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--fs" title="Fullscreen"></button>'
+			pswp_c += '				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>'
+			pswp_c += '				<div class="pswp__preloader">'
+			pswp_c += '					<div class="pswp__preloader__icn">'
+			pswp_c += '						<div class="pswp__preloader__cut">'
+			pswp_c += '							<div class="pswp__preloader__donut"></div>'
+			pswp_c += '						</div>'
+			pswp_c += '					</div>'
+			pswp_c += '				</div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">'
+			pswp_c += '				<div class="pswp__share-tooltip"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>'
+			pswp_c += '			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>'
+			pswp_c += '			<div class="pswp__caption">'
+			pswp_c += '				<div class="pswp__caption__center"></div>'
+			pswp_c += '			</div>'
+			pswp_c += '		</div>'
+			pswp_c += '	</div>'
+			pswp_c += '</div>';
+			$('body').append(pswp_c);
+		}
+
+		var pswpElement = document.querySelectorAll('.pswp')[0];
+
+		var items = [
+
+				{% if thumb or images %}
+				{% if thumb %}
+				{
+					src: '{{ popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endif %}
+				{% if images %}
+				{% for image in images %}
+				{
+					src: '{{ image.popup }}',
+					w: {{ popup_width }},
+					h: {{ popup_height }}
+				},
+				{% endfor %}
+				{% endif %}
+				{% endif %}
+
+		];
+
+		var options = {
+			index: index_start
+		};
+
+		function psw_construct() {
+
+			var psw_gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+
+			psw_gallery.init();
+
+			$('body').addClass('psw-open');
+
+			psw_gallery.listen('destroy', function() {
+				setTimeout(function () {
+					$('body').removeClass('psw-open');
+				}, 100);
+			});
+
+		}
+
+		if (typeof PhotoSwipe != 'function'  ) {
+
+			$('.gallery-locker').css({'display':'block'});
+
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.css">');
+			$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/default-skin/default-skin.css">');
+
+
+			$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe.min.js", function( data, textStatus, jqxhr ) {
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/photo-swipe/photoswipe-ui-default.min.js", function( data, textStatus, jqxhr ) {
+					psw_construct();
+					$('.gallery-locker').css({'display':'none'});
+				});
+			});
+
+		} else {
+			psw_construct();
+		}
+
+	}
+
+	$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+		$.ajax({
+			url: 'index.php?route=product/product/getRecurringDescription',
+			type: 'post',
+			data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+			dataType: 'json',
+			beforeSend: function() {
+				$('#recurring-description').html('');
+			},
+			success: function(json) {
+				$('select[name=\'recurring_id\']').parent().find('.text-danger').remove();
+
+				if (json['success']) {
+					$('#recurring-description').html('<small class="d-block mt-2 ">'+json['success']+'</small>');
+				}
+			}
+		});
+	});
+
+	$('#button-cart').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=extension/module/frametheme/ft_cart/add',
+			type: 'post',
+			data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+			dataType: 'json',
+			beforeSend: function() {
+				loading_text = $('#button-cart').attr('data-loading');
+				$('#button-cart').addClass('loading');
+				$('#button-cart .loading-wrapper').html(loading_text);
+				$('#button-cart').attr('disabled', 'disabled');
+				$('.alert-dismissible, #product .text-danger').remove();
+				$('#product').removeClass('has-error');
+				$('#product > div').removeClass('option-error');
+				$('#product .form-control, #product .btn').removeClass('border-danger');
+			},
+			complete: function() {
+				$('#button-cart').removeClass('loading');
+				$('#button-cart .loading-wrapper').html('{{ button_cart }}');
+				$('#button-cart').removeAttr('disabled');
+			},
+			success: function(json) {
+
+				if (json['error']) {
+					if (json['error']['option']) {
+						for (i in json['error']['option']) {
+							var element = $('#input-option' + i.replace('_', '-'));
+
+							if (element.parent().hasClass('input-group')) {
+								element.addClass('border-danger');
+								element.parent().find('button').addClass('border-danger');
+								element.parent().after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().parent().addClass('option-error');
+							} else {
+								element.addClass('border-danger');
+								element.after('<div class="text-danger"><small>' + json['error']['option'][i] + '</small></div>');
+								element.parent().parent().addClass('option-error');
+							}
+						}
+					}
+
+					if (json['error']['recurring']) {
+						$('select[name=\'recurring_id\']').addClass('border-danger');
+						$('select[name=\'recurring_id\']').after('<div class="text-danger"><small>' + json['error']['recurring'] + '</small></div>');
+						$('select[name=\'recurring_id\']').parent().parent().addClass('option-error');
+					}
+
+				}
+
+				if (json['success']) {
+
+					$('#ft-popup-cart').modal('show');
+
+					setTimeout(function () {
+						$.ajax({
+							url: 'index.php?route=extension/module/frametheme/ft_cart/info',
+							type: 'post',
+							dataType: 'html',
+							beforeSend: function() {
+								loading_text = $('#cart > button').attr('data-loading');
+								$('#cart').addClass('loading');
+								$('#cart > button').attr('disabled', 'disabled');
+								$('#cart > button #cart-total').html('<span class="loading-wrapper">' + loading_text + '</span>');
+							},
+							complete: function() {
+								$('#cart').removeClass('loading');
+								$('#cart > button').removeAttr('disabled');
+							},
+							success: function(data){
+								var data_alert 	= '<div class="alert alert-light">';
+										data_alert += 	'<div class="row no-gutters">';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<i class="fa fa-fw fa-check mr-2"></i>';
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col">';
+										data_alert += 			json['success'];
+										data_alert += 		'</div>';
+										data_alert += 		'<div class="col-auto">';
+										data_alert += 			'<button type="button" class="close" data-dismiss="alert">&times;</button>';
+										data_alert += 		'</div>';
+										data_alert += 	'</div>';
+										data_alert += '</div>';
+
+								$('#cart .cart-list').before(data_alert);
+								$('#cart > button #cart-total').html(json['total']);
+								$('#cart .cart-list').html($(data).find('.cart-list').html());
+							},
+							error: function(xhr, ajaxOptions, thrownError) {
+								alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+							}
+						});
+					}, 100);
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+
+	$('button[id^=\'button-upload\']').on('click', function() {
+		var node = this;
+
+		$('#form-upload').remove();
+		$('body').prepend('<form enctype="multipart/form-data" id="form-upload" class="d-none"><input type="file" name="file" /></form>');
+		$('#form-upload input[name=\'file\']').trigger('click');
+
+		if (typeof timer != 'undefined') {
+				clearInterval(timer);
+		}
+		timer = setInterval(function() {
+			if ($('#form-upload input[name=\'file\']').val() != '') {
+
+				var f_path = $('#form-upload input[name=\'file\']').val().split('\\'),
+						f_name = f_path[f_path.length - 1];
+
+				$(node).find('.button-text').html(f_name);
+
+				$(node).find('.static-icon').html('<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M2 12.5C2 9.46 4.46 7 7.5 7H18c2.21 0 4 1.79 4 4s-1.79 4-4 4H9.5C8.12 15 7 13.88 7 12.5S8.12 10 9.5 10H17v2H9.41c-.55 0-.55 1 0 1H18c1.1 0 2-.9 2-2s-.9-2-2-2H7.5C5.57 9 4 10.57 4 12.5S5.57 16 7.5 16H17v2H7.5C4.46 18 2 15.54 2 12.5z"/></svg>');
+
+				clearInterval(timer);
+
+				$.ajax({
+					url: 'index.php?route=tool/upload',
+					type: 'post',
+					dataType: 'json',
+					data: new FormData($('#form-upload')[0]),
+					cache: false,
+					contentType: false,
+					processData: false,
+					beforeSend: function() {
+						$(node).addClass('loading');
+					},
+					complete: function() {
+						$(node).removeClass('loading');
+					},
+					success: function(json) {
+						$('.text-danger').remove();
+						if (json['error']) {
+							$(node).parent().find('input').after('<div class="text-danger"><small>' + json['error'] + '</small></div>');
+							$(node).find('.button-text').html('{{ button_upload }}');
+							$(node).find('.static-icon').html('<svg fill="#aaa" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>');
+						}
+						if (json['success']) {
+							console.log(json['success']);
+							$(node).parent().find('input').val(json['code']);
+						}
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				});
+			}
+		}, 500);
+	});
+
+	function start_datetimepicker() {
+		$('.date').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickTime: false
+		});
+
+		$('.datetime').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: true,
+			pickTime: true
+		});
+
+		$('.time').datetimepicker({
+			locale: '{{ datepicker }}',
+			pickDate: false
+		});
+	}
+
+	$(function () {
+		if ($('.need-dtp').length > 0){
+			if (typeof jQuery().datetimepicker != 'function'  ) {
+
+				$('head').append('<link rel="stylesheet" href="catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.css">');
+
+				$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment.min.js", function( data, textStatus, jqxhr ) {
+					$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/moment/moment-with-locales.min.js", function( data, textStatus, jqxhr ) {
+						$.getScript("catalog/view/theme/{{ theme_dir }}/javascript/plugins/dtpicker-b4j3fix/bootstrap-datetimepicker.min.js", function( data, textStatus, jqxhr ) {
+							start_datetimepicker();
+						});
+					});
+				});
+
+			} else {
+				start_datetimepicker();
+			}
+		}
+	});
+
+	$('#review').delegate('.pagination a', 'click', function(e) {
+			e.preventDefault();
+
+			$('#review').load(this.href);
+
+	});
+
+	$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+	$('#button-review').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+			type: 'post',
+			dataType: 'json',
+			data: $("#form-review").serialize(),
+			beforeSend: function() {
+				$('#button-review').button('loading');
+			},
+			complete: function() {
+				$('#button-review').button('reset');
+			},
+			success: function(json) {
+				$('.alert-dismissible').remove();
+
+				if (json['error']) {
+					$('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+				}
+
+				if (json['success']) {
+					$('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+					$('input[name=\'name\']').val('');
+					$('textarea[name=\'text\']').val('');
+					$('input[name=\'rating\']:checked').prop('checked', false);
+				}
+			}
+		});
+	});
+
+
+</script>
+
+
+{{ footer }}

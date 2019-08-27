@@ -64,7 +64,7 @@
 						</div>
 						<div class="card-body">
 							<p>{{ text_i_am_returning_customer }}</p>
-							<form action="{{ action }}" method="post" enctype="multipart/form-data">
+							<form action="{{ action }}" method="post" enctype="multipart/form-data" onsubmit="yaCounter44964376.reachGoal('enter'); return true;">
 								<div class="form-group">
 									
 									<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
@@ -73,7 +73,7 @@
 									<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />
 								</div>
 								<input type="submit" value="{{ button_login }}" class="btn btn-primary px-5" />
-								<a href="{{ forgotten }}" class="btn btn-link">{{ text_forgotten }}</a>
+								<a href="{{ forgotten }}" class="btn btn-link" onclick="yaCounter44964376.reachGoal('password'); return true;">{{ text_forgotten }}</a>
 								{% if redirect %}
 								<input type="hidden" name="redirect" value="{{ redirect }}" />
 								{% endif %}
@@ -89,7 +89,7 @@
 						<div class="card-body">
 							<p><strong>{{ text_register }}</strong></p>
 							<p>{{ text_register_account }}</p>
-							<a href="{{ register }}" class="btn btn-primary px-4">{{ button_continue }}</a>
+							<a href="{{ register }}" class="btn btn-primary px-4" onclick="yaCounter44964376.reachGoal('registration_transition'); return true;">{{ button_continue }}</a>
 						</div>
 					</div>
         </div>

@@ -1081,6 +1081,7 @@
 
             self.validate(false).then(function(result) {
                 if (result) {
+                    yaCounter44964376.reachGoal('order_issued');
                     self.formSubmitted = true;
                     self.submitForm();
                 } else {

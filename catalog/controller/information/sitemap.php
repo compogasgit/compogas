@@ -74,11 +74,11 @@ class ControllerInformationSitemap extends Controller {
 		$data['informations'] = array();
 
 		foreach ($this->model_catalog_information->getInformations() as $result) {
-			$data['informations'][] = array(
-				'title' => $result['title'],
-				'href'  => $this->url->link('information/information', 'information_id=' . $result['information_id'])
-			);
-		}
+            $data['informations'][] = array(
+                'title' => $result['title'],
+                'href'  => $this->url->link('information/information', 'information_id=' . $result['information_id'])
+            );
+        }
 
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');

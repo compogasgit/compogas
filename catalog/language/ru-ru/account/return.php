@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']      = 'Возврат товара';
+$_['heading_title']      = 'Возврат товара в интернет-магазин Compogas.ru';
 
 // Text
 $_['text_account']       = 'Личный Кабинет';

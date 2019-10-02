@@ -316,6 +316,16 @@
 									}
 
 									</script>
+									<script>
+										window.addEventListener('load', function() {
+											if (window.location.href == "https://compogas.ru/index.php?route=information/contact/success" && document.referrer == "https://compogas.ru/contact-us" && performance.navigation.type == 0) {
+												yaCounter44964376.reachGoal('feedback_send');
+											}	
+											if (window.location.href == "https://compogas.ru/index.php?route=account/return/success" && document.referrer == "https://compogas.ru/request-return" && performance.navigation.type == 0) {
+												yaCounter44964376.reachGoal('return_send');
+											}
+										});										
+									</script>
 								</div>
 								{% endif %}								
 							</div>

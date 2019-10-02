@@ -1,0 +1,253 @@
+{{ header }}
+<div class="container">
+  	<div class="row">
+      {% if column_left %}
+		<div class="col-12 col-sm col-lg-3 order-lg-1 col-xl-mw260">
+			{{ column_left }}
+		</div>
+		{% endif %}
+		{% if column_right %}
+		<div class="col-12 col-sm col-lg-3 order-lg-3 col-xl-mw260">
+			{{ column_right }}
+		</div>
+		{% endif %}
+
+		<div id="content" class="col-12 col-lg order-lg-2 mb-3">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					{% set i = 0 %}
+					{% for breadcrumb in breadcrumbs %}
+					{% set i = i + 1 %}
+					{% if i == 1 %}
+					<li class="breadcrumb-item">
+						<a href="{{ breadcrumb.href }}">
+							<span class="si si-18 d-inline-block">
+								<svg height="18" fill="#333" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+									<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+								</svg>
+							</span>
+						</a>
+					</li>
+					{% elseif breadcrumbs|length != i %}
+					<li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% else %}
+					<li class="breadcrumb-item active">{{ breadcrumb.text }}</li>
+					{% endif %}
+					{% endfor %}
+				</ol>
+			</nav>
+		{{ content_top }}
+		<div class="row">
+            <div class="col-8"><h1 class="h2 mb-3" style>{{ heading_title }}</h1></div>
+            <div class="col-4" style="text-align: right;"><a class="btn btn-outline-danger font-weight-bold" href="/voprosy-i-otvety#question-form" data-toggle="modal">Задать вопрос</a></div>
+        </div>
+
+{% for article in articles_list %}
+    <div class="{{ list_type == 2 ? 'articles-grid' ~ class : 'articles-list' }}">
+        <div>
+
+            <div class="description">
+                    <div class="name"><a {{ article.external ? 'class="external" id="link_' ~ article.article_id ~ '"' }} href="{{ article.href }}">{{ article.name }}</a></div>
+
+                {% if article.description %}
+                    <div class="ac-snippet">{{ article.description }}</div>
+                {% endif %}
+
+                {% if show_date or show_views or show_readmore %}
+                <div class="add-info">
+                {% if show_date %}
+                <span class="article-date"><i class="fa fa-calendar"></i> {{ article.date }}</span>
+                {% endif %}
+                {% if article.description and show_readmore %}
+                <span {{ article.external ? 'class="art-readmore external" id="more_' ~ article.article_id : 'class="art-readmore show-answer"' }}><i class="fa fa-share-square-o"></i> читать ответ</span>
+                {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+	
+{% endfor %}
+
+<a name="question-form"></a>
+<div class="card">
+						<div class="card-header">
+							<h5 class="card-title m-0">Задать вопрос</h5>
+						</div>
+						<div class="card-body">
+						    <div id="successful-mes"></div>
+							<form action="" method="post" id="qa-form" enctype="multipart/form-data" class="form-horizontal">
+									<div class="form-row">
+										<div class="col-12 col-md-5 col-lg-4">
+											<div class="form-group required">
+												<!-- <label for="input-name">{{ entry_name }}</label> -->
+												<input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" placeholder="{{ entry_name }} *" />
+												{% if error_name %}
+												<small class="d-block text-danger" id="name-error"></small>
+												{% endif %}
+											</div>
+											<div class="form-group required">
+                                                <!-- <label for="input-email">{{ entry_email }}</label> -->
+                                                <input type="text" name="email" value="{{ email }}" id="input-email" class="form-control" placeholder="{{ entry_email }} *" />
+                                                {% if error_email %}
+                                                <small class="d-block text-danger" id="email-error"></small>
+                                                {% endif %}
+                                            </div>
+                                            
+										</div>
+										<div class="col-12 col-md-7 col-lg-8">
+                                            <div class="form-group required">
+                                                <!-- <label for="input-enquiry">{{ entry_enquiry }}</label> -->
+                                                <textarea name="enquiry" rows="5" id="input-enquiry" class="form-control" placeholder="Ваш вопрос *">{{ enquiry }}</textarea>
+                                                {% if error_enquiry %}
+                                                <small class="d-block text-danger" id="enquiry-error"></small>
+                                                {% endif %}
+                                            </div>
+                                            
+                                        </div>
+										<div class="col-4 col-sm-4">
+
+										</div>
+
+									</div>
+                                    <div class="form-row">
+                                        <div class="col-12 col-md-5 col-lg-4">
+                                            {{ captcha }}
+                                        </div>
+                                        <div class="col-12 col-md-7 col-lg-8">
+                                            <div>
+                                                {% if text_agree %}
+                                                <div class="mb-3">
+                                                    <input type="checkbox" name="agree" value="1" {% if agree %} checked="checked" {% endif %} class="float-left mr-2" />
+                                                    <small class="d-block">{{ text_agree }}</small>
+                                                </div>
+                                                <input type="submit" value="{{ button_submit }}" class="btn btn-primary" />
+                                                {% else %}
+                                                <input class="btn btn-primary" type="submit" value="{{ button_submit }}" />
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+				
+								
+
+							</form>
+						</div>
+</div>
+</div>
+<style>
+.answer {
+    display: none;
+    padding-top: 25px;
+}
+
+.answer_show {
+    display: block;
+}
+
+.show-answer {
+    cursor: pointer;
+}
+
+#successful-mes {
+    text-align: center;
+    color: #4caf50;
+    padding-bottom: 20px;
+    font-weight: bold;
+}
+
+#input-enquiry {
+    height: 80px;
+}
+
+.g-recaptcha {
+    transform: scale(0.88);
+    transform-origin: 0 0;
+}
+</style>
+<script>
+    var showAnswerBtn = document.getElementsByClassName('show-answer');
+    
+    for (var i = 0; i < showAnswerBtn.length; i++) {
+        showAnswerBtn[i].onclick = function () {
+            this.parentElement.parentElement.querySelector('.answer').classList.toggle('answer_show');
+        };
+    }
+
+   // document.getElementById('qa-form').onsubmit = ajaxSend;
+
+    $('#qa-form').on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+			url: 'index.php?route=questionform/question_answer',
+			type: 'post',
+			dataType: 'json',
+			data: $("#qa-form").serialize(),
+			success: function(json) {
+                console.log(json);
+				//$('.alert-dismissible').remove();
+
+				if (json['status'] == 'error') {
+					$('#name-error').html(json['error_name']);
+					$('#email-error').html(json['error_email']);
+					$('#enquiry-error').html(json['error_enquiry']);
+                    $('#successful-mes').html('');
+				}
+
+				if (json['status'] == 'ok!') {
+                    $('#successful-mes').html('Ваш вопрос успешно отправлен!');
+                    $('#name-error').html('');
+					$('#email-error').html('');
+					$('#enquiry-error').html('');
+                    yaCounter44964376.reachGoal('faq_send');
+				}
+			}
+		});  
+    });
+
+    $('#g-recaptcha-response').attr('required', 'required');
+
+    function ajaxSend(event) {
+        event.preventDefault();
+
+        var xhr = new XMLHttpRequest();
+
+        var data = 'name=' + document.getElementById('input-name').value +
+        '&' + 'email=' + document.getElementById('input-email').value +
+        '&' + 'enquiry=' + document.getElementById('input-enquiry').value;
+
+        xhr.open('POST', 'index.php?route=questionform/question_answer', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                console.log(JSON.parse(this.responseText));
+
+                var answer = JSON.parse(this.responseText);
+
+                if (answer['status'] == 'error') {
+                     document.getElementById('name-error').innerHTML = answer['error_name'];
+                     document.getElementById('email-error').innerHTML = answer['error_email'];
+                     document.getElementById('enquiry-error').innerHTML = answer['error_enquiry'];
+                     document.getElementById('successful-mes').innerHTML = "";
+                } else if (answer['status'] == 'ok!') {
+                     document.getElementById('successful-mes').innerHTML = "Ваш вопрос успешно отправлен!";
+                     document.getElementById('name-error').innerHTML = "";
+                     document.getElementById('email-error').innerHTML = "";
+                     document.getElementById('enquiry-error').innerHTML = "";
+                }
+
+            }
+        }
+
+        xhr.send(data);
+    }
+
+
+
+</script>
+{{ footer }}

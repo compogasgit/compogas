@@ -4,8 +4,8 @@ class ControllerInformationKatalog extends Controller {
 		$this->load->language('information/katalog');
 		$data['heading_title'] = $this->language->get('heading_title');
 		$this->document->setTitle($this->language->get('heading_title'));
-		$this->document->setDescription('На данной странице представлен ассортимент взрывобезопасных композитных баллонов из Чешской республики, Норвегии и Индии - полный перечень доступных в продаже на территории РФ. Купить композитный газовый баллон Вы можете нажав кнопку "Купить" под фото товара.');
-		$this->document->setKeywords('каталог, композитные баллоны');
+		$this->document->setDescription('В интернет-магазине Compogas.ru представлен большой ассортимент композитных и стальных баллонов и сопутствующего оборудования. Выгодные цены. Оптовые и розничные продажи.');
+		$this->document->setKeywords('Каталог, газовые баллоны, стальные баллоны, композитный баллоны, комплектующие, цены, купить');
 
 		$data['breadcrumbs'] = array();
 

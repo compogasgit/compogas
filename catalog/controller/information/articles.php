@@ -251,6 +251,27 @@ class ControllerInformationArticles extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
+		//поиск статей, которые относятся к категории "Вопросы и ответы"
+		foreach ($data['articles'] as $key => $article_category) {
+			if ($article_category['name'] == 'Вопросы и ответы') {
+				foreach ($article_category['children'] as $article) {
+					$noShowArticleId[] = $article['article_id'];
+				}
+			}
+		}
+
+		//удаление статей, которые относятся к категории "Вопросы и ответы"
+		if (isset($noShowArticleId)) {
+			foreach ($data['latest_articles'] as $key => $article) {
+				foreach ($noShowArticleId as $id) {
+					if ($article['article_id'] == $id) {
+						unset($data['latest_articles'][$key]);
+					}
+				}
+			}
+		}
+		
+
 		$this->response->setOutput($this->load->view('information/articles', $data));
 	}
 }

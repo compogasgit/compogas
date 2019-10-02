@@ -411,7 +411,17 @@ $this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popu
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
 
-			$this->response->setOutput($this->load->view('information/article', $data));									
+			if ($data['heading_title'] == 'Вопросы и ответы') {
+				if ($this->config->get('captcha_' . $this->config->get('config_captcha') . '_status') && in_array('contact', (array)$this->config->get('config_captcha_page'))) {
+					$data['captcha'] = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha'), $this->error);
+				} else {
+					$data['captcha'] = '';
+				}
+				$this->response->setOutput($this->load->view('information/questions', $data));
+			} else {
+				$this->response->setOutput($this->load->view('information/article', $data));
+			}
+												
     	} else {
 		$url = '';
 		

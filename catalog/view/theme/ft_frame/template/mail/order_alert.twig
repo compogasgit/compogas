@@ -21,7 +21,7 @@
 			<a href="{{ link }}"><b>{{ text_order_id }}</b> {{ order_id }}</a><br />
 			<b>{{ text_date_added }}</b> {{ date_added }}<br />
 			<b>Способ оплаты: </b> {{ payment_method }}<br />
-			{% if shipping_method %} 
+			{% if shipping_method %}
 				<b>Способ доставки: </b> {{ shipping_method }}
 			{% endif %}
 		</td>
@@ -95,7 +95,7 @@
 			{{ 'уточняйте' }}
 		{% else %}
 			{{ total.text }}
-		{% endif %}	
+		{% endif %}
 	</td>
 </tr>
 {% endfor %}

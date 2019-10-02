@@ -13,6 +13,10 @@ class YmlBuilder
         if (!in_array($outputCharset, array('utf-8', 'windows-1251'))) {
             throw new \InvalidArgumentException('Invalid character set value: ' . $outputCharset);
         }
+
+        ignore_user_abort(true);
+        set_time_limit(600);
+
         $this->charset = $outputCharset;
         $this->sourceCharset = $sourceCharset;
     }
@@ -201,8 +205,8 @@ class YmlBuilder
 
         if ($offer->hasParameters()) {
             foreach ($offer->getParameters() as $param) {
-                $unit   = $param->hasUnit() ? ' unit="'.$param->getUnit().'"' : '';
-                $result .= '<param name="'.$param->getName().'" '.$unit.'>'.$param->getValue().'</param>'.PHP_EOL;
+                $unit   = $param->hasUnit() ? ' unit="'.$this->prepareValue($param->getUnit()).'"' : '';
+                $result .= '<param name="' . $this->prepareValue($param->getName()) . '" '.$unit.'>' . $this->prepareValue($param->getValue()) . '</param>'.PHP_EOL;
             }
         }
 
